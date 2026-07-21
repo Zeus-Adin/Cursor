@@ -600,9 +600,10 @@ def build():
     add_heading_styled(doc, "7. Expected Outcomes", level=1)
     add_body(
         doc,
-        "With Stacks Endowment support over the 5-month program, StacksPot expects to achieve:",
-        after=6,
+        "With Stacks Endowment support over the 5-month program, StacksPot expects to achieve measurable on-chain activity across pot lifecycle operations and participant joins. Each of the following is a distinct Stacks transaction.",
     )
+
+    add_heading_styled(doc, "Qualitative Outcomes", level=2)
     make_table(
         doc,
         ["Outcome", "Description"],
@@ -622,6 +623,89 @@ def build():
         col_widths=[2.2, 4.3],
     )
 
+    add_heading_styled(doc, "Transaction Baseline (How Counts Are Derived)", level=2)
+    add_body(
+        doc,
+        "Pot lifecycle transactions — each sponsored pot generates 4 transactions:",
+        after=6,
+    )
+    make_table(
+        doc,
+        ["Transaction", "Per Pot", "Notes"],
+        [
+            ("Pot deploy", "1", "Creates the pot contract / instance"),
+            ("Pot activate", "1", "Enables the pot for the cycle"),
+            ("Pot start", "1", "Opens the pot for participation"),
+            ("Pot close", "1", "Closes the pot at cycle end"),
+            ("Lifecycle subtotal", "4", "Per pot, every cycle"),
+        ],
+        col_widths=[1.8, 1.0, 3.7],
+    )
+
+    add_body(
+        doc,
+        "Participant join transactions — each joined participant is 1 transaction. Minimum joins use the per-tier Min. Participants from the cycle allocation table:",
+        after=6,
+    )
+    make_table(
+        doc,
+        ["Entry Min.", "Qty / Cycle", "Min. Participants / Pot", "Join Txs / Cycle"],
+        [
+            ("25 STX", "1", "10", "10"),
+            ("30 STX", "1", "15", "15"),
+            ("35 STX", "1", "20", "20"),
+            ("40 STX", "1", "25", "25"),
+            ("45 STX", "1", "30", "30"),
+            ("50 STX", "2", "50", "100"),
+            ("100 STX", "1", "100", "100"),
+            ("Cycle total", "8 pots", "—", "300 join txs"),
+        ],
+        col_widths=[1.4, 1.3, 2.0, 1.8],
+    )
+
+    note_tx = doc.add_paragraph()
+    set_paragraph_spacing(note_tx, before=0, after=10, line=1.1)
+    add_text(note_tx, "Note: ", size=10, italic=True, bold=True, color=GRAY)
+    add_text(
+        note_tx,
+        "Figures below are minimum expected transaction counts (at min. participant fill). Actual totals may be higher if pots overfill.",
+        size=10,
+        italic=True,
+        color=GRAY,
+    )
+
+    add_heading_styled(doc, "Expected Transaction Breakdown", level=2)
+    make_table(
+        doc,
+        ["Transaction Type", "Per Cycle (8 pots)", "Per Month (16 pots)", "Full Program (80 pots / 10 cycles)"],
+        [
+            ("Pot deploy", "8", "16", "80"),
+            ("Pot activate", "8", "16", "80"),
+            ("Pot start", "8", "16", "80"),
+            ("Pot close", "8", "16", "80"),
+            ("Lifecycle subtotal", "32", "64", "320"),
+            ("Participant joins (min.)", "300", "600", "3,000"),
+            ("Total on-chain txs (min.)", "332", "664", "3,320"),
+        ],
+        col_widths=[2.2, 1.4, 1.5, 2.4],
+    )
+
+    add_heading_styled(doc, "Program Totals at a Glance", level=2)
+    make_table(
+        doc,
+        ["Metric", "Expected Minimum"],
+        [
+            ("Sponsored pots delivered", "80"),
+            ("Pot deploy transactions", "80"),
+            ("Pot activate transactions", "80"),
+            ("Pot start transactions", "80"),
+            ("Pot close transactions", "80"),
+            ("Participant join transactions", "3,000"),
+            ("Total Stacks transactions", "3,320"),
+        ],
+        col_widths=[3.5, 3.0],
+    )
+
     add_heading_styled(doc, "8. Transparency & Reporting", level=1)
     add_body(
         doc,
@@ -635,6 +719,7 @@ def build():
         "Total STX deposited",
         "Number of pots created (target: 16 sponsored pots/month)",
         "Sponsored capital deployed per cycle (300,000 STX) and confirmation of return to sponsor address after each cycle",
+        "Transaction counts: pot deploy, activate, start, close, and participant joins",
         "Early retention / repeat participation signals",
     ]:
         add_bullet(doc, item)
@@ -643,6 +728,7 @@ def build():
     add_body(doc, "A comprehensive retrospective including:", after=4)
     for item in [
         "Full campaign performance analysis across 10 cycles / 80 pots",
+        "Cumulative transaction breakdown (target minimum: 3,320 on-chain txs)",
         "User retention statistics across the 5-month period",
         "Cumulative STX utilization and wallet activity",
         "Capital custody summary (allocation in, cycle redeployments, final return)",

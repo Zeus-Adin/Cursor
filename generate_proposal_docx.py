@@ -6,7 +6,7 @@ from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_LINE_SPACING
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
-from docx.shared import Inches, Pt, RGBColor, Twips
+from docx.shared import Inches, Pt, RGBColor
 
 
 NAVY = RGBColor(0x1A, 0x36, 0x5D)
@@ -34,10 +34,10 @@ def add_text(paragraph, text, **kwargs):
     return run
 
 
-def set_paragraph_spacing(paragraph, before=0, after=8, line=1.15, space_after=None):
+def set_paragraph_spacing(paragraph, before=0, after=8, line=1.15):
     fmt = paragraph.paragraph_format
     fmt.space_before = Pt(before)
-    fmt.space_after = Pt(after if space_after is None else space_after)
+    fmt.space_after = Pt(after)
     fmt.line_spacing_rule = WD_LINE_SPACING.MULTIPLE
     fmt.line_spacing = line
 
@@ -63,15 +63,12 @@ def set_cell_borders(cell, color="CBD5E1", size="4"):
     tc_pr.append(tc_borders)
 
 
-def set_cell_text(cell, text, bold=False, size=10, color=DARK, align=WD_ALIGN_PARAGRAPH.LEFT, font="Calibri"):
+def set_cell_text(cell, text, bold=False, size=10, color=DARK, align=WD_ALIGN_PARAGRAPH.LEFT):
     cell.text = ""
     p = cell.paragraphs[0]
     p.alignment = align
     set_paragraph_spacing(p, before=2, after=2, line=1.0)
-    add_text(p, text, size=size, bold=bold, color=color, name=font)
-    for paragraph in cell.paragraphs:
-        paragraph.paragraph_format.space_before = Pt(2)
-        paragraph.paragraph_format.space_after = Pt(2)
+    add_text(p, text, size=size, bold=bold, color=color)
 
 
 def add_heading_styled(doc, text, level=1):
@@ -92,7 +89,6 @@ def add_body(doc, text, after=8):
 
 
 def add_rich_body(doc, parts, after=8):
-    """parts: list of (text, kwargs)"""
     p = doc.add_paragraph()
     set_paragraph_spacing(p, before=0, after=after, line=1.15)
     for text, kwargs in parts:
@@ -107,7 +103,6 @@ def add_bullet(doc, text, bold_prefix=None):
         add_text(p, bold_prefix, size=11, bold=True, color=DARK)
         add_text(p, text, size=11, color=DARK)
     else:
-        # Clear default run if any
         if p.runs:
             p.runs[0].text = ""
         add_text(p, text, size=11, color=DARK)
@@ -127,7 +122,21 @@ def add_numbered(doc, text, bold_prefix=None):
     return p
 
 
-def make_table(doc, headers, rows, col_widths=None, header=True):
+def is_total_row(row):
+    joined = " ".join(str(x) for x in row).lower()
+    return any(
+        key in joined
+        for key in (
+            "program total",
+            "3,000,000",
+            "300,000 stx / cycle",
+            "5-month program",
+            "full program",
+        )
+    ) or (len(row) and str(row[0]).strip() in ("8", "10") and "300,000" in " ".join(str(x) for x in row))
+
+
+def make_table(doc, headers, rows, col_widths=None):
     table = doc.add_table(rows=1 + len(rows), cols=len(headers))
     table.alignment = WD_TABLE_ALIGNMENT.CENTER
     table.autofit = True
@@ -139,38 +148,31 @@ def make_table(doc, headers, rows, col_widths=None, header=True):
         set_cell_borders(cell, color="1A365D", size="4")
 
     for r_idx, row in enumerate(rows):
+        total = is_total_row(row) or (
+            r_idx == len(rows) - 1
+            and any("total" in str(x).lower() or "3,000,000" in str(x) or "300,000 STX / cycle" in str(x) for x in row)
+        )
         for c_idx, val in enumerate(row):
             cell = table.rows[r_idx + 1].cells[c_idx]
-            is_total = r_idx == len(rows) - 1 and any(
-                str(row[0]).lower().startswith(("8", "program")) or "total" in str(x).lower() for x in row
-            )
-            # Detect totals more simply
-            bold = False
-            if isinstance(val, str) and ("300,000" in val or val == "8" or "Program total" in val or "8 sponsored" in val):
-                bold = True
-            # Bold last total row
-            if r_idx == len(rows) - 1 and ("300,000 STX" in str(row[-1]) or "Program total" in str(row)):
-                bold = True
-            align = WD_ALIGN_PARAGRAPH.CENTER if c_idx == 0 else WD_ALIGN_PARAGRAPH.LEFT
-            if c_idx >= len(headers) - 3:
-                align = WD_ALIGN_PARAGRAPH.RIGHT if c_idx > 0 else align
-            # For descriptive tables keep left
-            if len(headers) == 2:
-                align = WD_ALIGN_PARAGRAPH.LEFT
-            set_cell_text(cell, str(val), bold=bold, size=10, color=DARK, align=align)
-            set_cell_borders(cell)
-            if r_idx % 2 == 1:
-                shade_cell(cell, ALT_ROW)
-            if r_idx == len(rows) - 1 and ("300,000 STX" in str(row[-1]) or "Program total" in str(row) or (row[0] == "8")):
-                shade_cell(cell, LIGHT_FILL)
+            align = WD_ALIGN_PARAGRAPH.LEFT
+            if len(headers) <= 3 and c_idx == len(headers) - 1:
+                align = WD_ALIGN_PARAGRAPH.RIGHT
+            if c_idx == 0 and len(headers) > 2:
+                align = WD_ALIGN_PARAGRAPH.CENTER
+            if total:
                 set_cell_text(cell, str(val), bold=True, size=10, color=NAVY, align=align)
+                shade_cell(cell, LIGHT_FILL)
+            else:
+                set_cell_text(cell, str(val), bold=False, size=10, color=DARK, align=align)
+                if r_idx % 2 == 1:
+                    shade_cell(cell, ALT_ROW)
+            set_cell_borders(cell)
 
     if col_widths:
         for row in table.rows:
             for idx, width in enumerate(col_widths):
                 row.cells[idx].width = Inches(width)
 
-    # Spacer after table
     spacer = doc.add_paragraph()
     set_paragraph_spacing(spacer, before=0, after=6, line=1.0)
     return table
@@ -191,23 +193,37 @@ def add_horizontal_line(doc):
     return p
 
 
+def add_meta_table(doc, rows):
+    table = doc.add_table(rows=len(rows), cols=2)
+    table.alignment = WD_TABLE_ALIGNMENT.CENTER
+    for i, (label, value) in enumerate(rows):
+        c0, c1 = table.rows[i].cells
+        set_cell_text(c0, label, bold=True, size=11, color=WHITE)
+        shade_cell(c0, HEADER_FILL)
+        set_cell_borders(c0, color="1A365D")
+        set_cell_text(c1, value, size=11, color=DARK)
+        set_cell_borders(c1)
+        shade_cell(c1, ALT_ROW if i % 2 else "FFFFFF")
+        c0.width = Inches(2.4)
+        c1.width = Inches(4.1)
+    return table
+
+
 def build():
     doc = Document()
 
-    # Page setup
     section = doc.sections[0]
     section.top_margin = Inches(0.85)
     section.bottom_margin = Inches(0.85)
     section.left_margin = Inches(1.0)
     section.right_margin = Inches(1.0)
 
-    # Default style
     style = doc.styles["Normal"]
     style.font.name = "Calibri"
     style.font.size = Pt(11)
     style.font.color.rgb = DARK
 
-    # ---- Cover / Title ----
+    # Title
     title = doc.add_paragraph()
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
     set_paragraph_spacing(title, before=24, after=4, line=1.1)
@@ -227,31 +243,24 @@ def build():
 
     add_horizontal_line(doc)
 
-    # Meta table
-    meta = [
-        ("Submitted By", "StacksPot Team"),
-        ("Submitted To", "Stacks Endowment Team"),
-        ("Program Duration", "5 months"),
-        ("Requested Allocation", "~300,000 STX"),
-        ("Date", "July 2026"),
-    ]
-    meta_table = doc.add_table(rows=len(meta), cols=2)
-    meta_table.alignment = WD_TABLE_ALIGNMENT.CENTER
-    for i, (label, value) in enumerate(meta):
-        c0, c1 = meta_table.rows[i].cells
-        set_cell_text(c0, label, bold=True, size=11, color=WHITE)
-        shade_cell(c0, HEADER_FILL)
-        set_cell_borders(c0, color="1A365D")
-        set_cell_text(c1, value, bold=False, size=11, color=DARK)
-        set_cell_borders(c1)
-        shade_cell(c1, ALT_ROW if i % 2 else "FFFFFF")
-        c0.width = Inches(2.2)
-        c1.width = Inches(4.3)
+    add_meta_table(
+        doc,
+        [
+            ("Submitted By", "StacksPot Team"),
+            ("Submitted To", "Stacks Endowment Team"),
+            ("Program Duration", "5 months"),
+            ("Cycle Length", "2 weeks"),
+            ("Pots per Cycle", "8"),
+            ("Pots per Month", "16 (2 cycles)"),
+            ("Requested Allocation", "~3,000,000 STX"),
+            ("Date", "July 2026"),
+        ],
+    )
 
     spacer = doc.add_paragraph()
     set_paragraph_spacing(spacer, before=6, after=6)
 
-    # ---- Proposal Objective ----
+    # Objective
     add_heading_styled(doc, "Proposal Objective", level=1)
     add_rich_body(
         doc,
@@ -262,7 +271,7 @@ def build():
         ],
     )
 
-    # ---- 1. Executive Summary ----
+    # 1. Executive Summary
     add_heading_styled(doc, "1. Executive Summary", level=1)
     add_body(
         doc,
@@ -283,19 +292,32 @@ def build():
             ("Sponsored Pot Growth Accelerator Program", {"size": 11, "bold": True}),
             ("—a focused, ", {"size": 11}),
             ("5-month", {"size": 11, "bold": True}),
-            (" campaign cycle designed to boost community pots with additional sBTC rewards, strengthen participation incentives, encourage more pot deployments, and increase overall ecosystem activity.", {"size": 11}),
+            (" initiative designed to boost community pots with additional sBTC rewards, strengthen participation incentives, encourage more pot deployments, and increase overall ecosystem activity.", {"size": 11}),
         ],
     )
+
+    add_heading_styled(doc, "Operating Model at a Glance", level=2)
+    make_table(
+        doc,
+        ["Unit", "Duration / Count", "Sponsored Boost"],
+        [
+            ("1 cycle", "2 weeks · 8 pots", "300,000 STX"),
+            ("1 month", "2 cycles · 16 pots", "600,000 STX"),
+            ("Full program", "5 months · 10 cycles · 80 pots", "~3,000,000 STX"),
+        ],
+        col_widths=[1.5, 3.2, 1.8],
+    )
+
     add_rich_body(
         doc,
         [
             ("We are seeking consideration for an ecosystem growth allocation of approximately ", {"size": 11}),
-            ("300,000 STX", {"size": 11, "bold": True}),
-            (" to fund sponsored pot campaigns across this 5-month period, with the goal of accelerating adoption and building sustainable user growth.", {"size": 11}),
+            ("3,000,000 STX", {"size": 11, "bold": True}),
+            (" to fund these sponsored pot campaigns across the 5-month period, with the goal of accelerating adoption and building sustainable user growth.", {"size": 11}),
         ],
     )
 
-    # ---- 2. Current Challenge ----
+    # 2. Challenge
     add_heading_styled(doc, "2. Current Challenge", level=1)
     add_heading_styled(doc, "The User Adoption Barrier", level=2)
     add_rich_body(
@@ -324,11 +346,13 @@ def build():
         [
             ("To establish network effects, StacksPot needs an initial growth catalyst that increases reward attractiveness while introducing more users to the protocol. A ", {"size": 11}),
             ("time-bound, 5-month sponsored program", {"size": 11, "bold": True}),
-            (" provides that catalyst with clear milestones, measurable outcomes, and a defined end state for evaluation.", {"size": 11}),
+            ("—running ", {"size": 11}),
+            ("8 pots every 2-week cycle", {"size": 11, "bold": True}),
+            ("—provides that catalyst with clear milestones, measurable outcomes, and a defined end state for evaluation.", {"size": 11}),
         ],
     )
 
-    # ---- 3. Proposed Solution ----
+    # 3. Solution
     add_heading_styled(doc, "3. Proposed Solution", level=1)
     add_heading_styled(doc, "StacksPot Growth Accelerator Program", level=2)
     add_rich_body(
@@ -356,31 +380,50 @@ def build():
         col_widths=[4.5, 2.0],
     )
 
-    # ---- 4. Program Duration ----
+    # 4. Duration
     add_heading_styled(doc, "4. Program Duration & Operating Context", level=1)
+    add_heading_styled(doc, "Cycle Cadence", level=2)
+    make_table(
+        doc,
+        ["Parameter", "Value"],
+        [
+            ("Pot / cycle length", "2 weeks"),
+            ("Sponsored pots per cycle", "8 (full tier mix)"),
+            ("Cycles per month", "2"),
+            ("Sponsored pots per month", "16"),
+            ("Program length", "5 months (~10 cycles)"),
+            ("Total sponsored pots", "80"),
+        ],
+        col_widths=[3.0, 3.5],
+    )
+
     add_heading_styled(doc, "5-Month Campaign Window", level=2)
     add_rich_body(
         doc,
         [
             ("This proposal requests funding for a ", {"size": 11}),
             ("5-month Growth Accelerator Program", {"size": 11, "bold": True}),
-            (". Each pot runs on a ", {"size": 11}),
+            (". Every ", {"size": 11}),
             ("2-week cycle", {"size": 11, "bold": True}),
-            (", so the schedule is paced at roughly two sponsored pots per month.", {"size": 11}),
+            (" deploys the full ", {"size": 11}),
+            ("8-pot", {"size": 11, "bold": True}),
+            (" sponsorship mix. Because a month contains two cycles, StacksPot will run ", {"size": 11}),
+            ("16 sponsored pots per month", {"size": 11, "bold": True}),
+            (".", {"size": 11}),
         ],
     )
     add_body(doc, "The program is structured to:", after=4)
-    add_numbered(doc, " with smaller, accessible pots early in the program", bold_prefix="Ramp adoption")
-    add_numbered(doc, " with mid-tier campaigns through the middle months", bold_prefix="Sustain momentum")
-    add_numbered(doc, " with larger flagship pots toward the end of the cycle", bold_prefix="Concentrate demand")
-    add_numbered(doc, " across a long enough window to distinguish campaign spikes from lasting engagement", bold_prefix="Measure retention")
+    add_numbered(doc, " — establish the 8-pot / 2-week rhythm from Month 1", bold_prefix="Launch at full cadence")
+    add_numbered(doc, " — keep all entry tiers live each cycle so users at every commitment level can join", bold_prefix="Sustain high participation")
+    add_numbered(doc, " — 16 pots/month creates repeated touchpoints for wallets, communities, and builders", bold_prefix="Compound network effects")
+    add_numbered(doc, " — a 5-month window is long enough to distinguish campaign spikes from lasting engagement", bold_prefix="Measure retention")
 
-    add_body(doc, "A 5-month runway (~20 weeks / ~10 bi-weekly cycles) is long enough to:", after=4)
+    add_body(doc, "A 5-month runway (~20 weeks / 10 bi-weekly cycles) is long enough to:", after=4)
     for item in [
-        "Run all eight sponsored pot tiers sequentially without overcrowding overlapping cycles",
-        "Allow communities and builders to plan and deploy their own pots in buffer weeks",
-        "Collect meaningful retention and repeat-participation data",
-        "Provide the Endowment with clear monthly visibility into impact",
+        "Run 80 sponsored pots without thinning the per-cycle incentive design",
+        "Give communities and builders a predictable bi-weekly cadence to plan around",
+        "Collect meaningful retention and repeat-participation data across 10 cycles",
+        "Provide the Endowment with clear monthly visibility into impact (16 pots / 600,000 STX per month)",
     ]:
         add_bullet(doc, item)
 
@@ -389,28 +432,26 @@ def build():
         "At the end of Month 5, StacksPot will deliver a full program retrospective covering participation, STX utilization, pot creation, sponsored reward distribution, and retention—supporting a data-driven decision on any future continuation.",
     )
 
-    # ---- 5. Campaign Structure ----
+    # 5. Campaign Structure
     add_heading_styled(doc, "5. Proposed Campaign Structure", level=1)
     add_heading_styled(doc, "Campaign Name", level=2)
-    add_rich_body(
-        doc,
-        [
-            ("StacksPot Growth Accelerator", {"size": 11, "bold": True}),
-        ],
-        after=4,
-    )
+    add_rich_body(doc, [("StacksPot Growth Accelerator", {"size": 11, "bold": True})], after=4)
     add_body(
         doc,
         "A funded, 5-month initiative to increase participation, reward users, and encourage individual and community-driven pot creation.",
     )
 
-    add_heading_styled(doc, "Proposed Allocation", level=2)
+    add_heading_styled(doc, "Per-Cycle Allocation (8 Pots · 300,000 STX)", level=2)
     add_rich_body(
         doc,
         [
-            ("The ", {"size": 11}),
-            ("~300,000 STX", {"size": 11, "bold": True}),
-            (" sponsorship budget will be distributed across StacksPot campaigns of varying entry sizes to maximize participation, accelerate pot growth, and generate sustainable sBTC rewards.", {"size": 11}),
+            ("Each ", {"size": 11}),
+            ("2-week cycle", {"size": 11, "bold": True}),
+            (" deploys the following ", {"size": 11}),
+            ("8 sponsored pots", {"size": 11, "bold": True}),
+            (". The sponsorship budget for one cycle is ", {"size": 11}),
+            ("300,000 STX", {"size": 11, "bold": True}),
+            (", distributed across entry sizes to maximize participation, accelerate pot growth, and generate sustainable sBTC rewards.", {"size": 11}),
         ],
     )
 
@@ -425,9 +466,9 @@ def build():
             ("1", "45 STX", "30", "1,350 STX", "30,000 STX", "~$15.00 sBTC"),
             ("2", "50 STX", "50", "2,500 STX", "50,000 STX", "~$25.20 sBTC"),
             ("1", "100 STX", "100", "10,000 STX", "100,000 STX", "~$52.80 sBTC"),
-            ("8", "—", "—", "—", "300,000 STX", "—"),
+            ("8", "—", "—", "—", "300,000 STX / cycle", "—"),
         ],
-        col_widths=[0.7, 1.0, 1.3, 1.1, 1.2, 1.2],
+        col_widths=[0.7, 1.0, 1.3, 1.1, 1.4, 1.1],
     )
 
     note = doc.add_paragraph()
@@ -435,69 +476,59 @@ def build():
     add_text(note, "Note: ", size=10, italic=True, bold=True, color=GRAY)
     add_text(
         note,
-        "Estimated sBTC reward figures are approximate and subject to market conditions and yield performance at campaign time.",
+        "Estimated sBTC reward figures are approximate and subject to market conditions and yield performance at campaign time. Awarded boost amounts above are per cycle; the same mix repeats each cycle.",
         size=10,
         italic=True,
         color=GRAY,
     )
 
-    add_heading_styled(doc, "Pot Cycle Length", level=2)
-    add_rich_body(
+    add_heading_styled(doc, "Program Scale", level=2)
+    make_table(
         doc,
+        ["Scope", "Cycles", "Pots", "Sponsored Boost"],
         [
-            ("Each sponsored pot runs on a ", {"size": 11}),
-            ("2-week cycle", {"size": 11, "bold": True}),
-            (". Over a 5-month program (~20 weeks), that provides capacity for about ", {"size": 11}),
-            ("10 bi-weekly cycles", {"size": 11, "bold": True}),
-            (". The ", {"size": 11}),
-            ("8 sponsored pots", {"size": 11, "bold": True}),
-            (" therefore occupy ", {"size": 11}),
-            ("16 weeks", {"size": 11, "bold": True}),
-            (" of active campaigns, with remaining weeks used for pacing, community-led pots, and program wrap-up.", {"size": 11}),
+            ("Per cycle", "1", "8", "300,000 STX"),
+            ("Per month", "2", "16", "600,000 STX"),
+            ("5-month program", "10", "80", "3,000,000 STX"),
         ],
+        col_widths=[2.0, 1.2, 1.2, 2.0],
     )
 
     add_heading_styled(doc, "Indicative 5-Month Rollout", level=2)
     add_body(
         doc,
-        "Campaigns are sequenced one pot per 2-week cycle—about two pots per month—to build familiarity, then scale commitment:",
+        "Every month runs two full cycles of the 8-pot mix (16 pots). Boost volume stays consistent so the market can form habits around the bi-weekly cadence:",
         after=6,
     )
     make_table(
         doc,
-        ["Month", "Focus", "Campaign Tiers (Entry Min.)", "Cycles", "Indicative Boost"],
+        ["Month", "Focus", "Cycles", "Pots", "Indicative Boost"],
         [
-            ("1", "Launch & discovery — lower barriers, introduce sponsorship", "25 STX → 30 STX", "2", "25,000 STX"),
-            ("2", "Expand mid-tier participation", "35 STX → 40 STX", "2", "45,000 STX"),
-            ("3", "Scale community pots", "45 STX → 50 STX (1 of 2)", "2", "80,000 STX"),
-            ("4", "Sustain engagement & retention", "50 STX (2 of 2)", "1", "50,000 STX"),
-            ("5", "Flagship campaign & program close", "100 STX", "1", "100,000 STX"),
-            ("", "Program total", "8 sponsored pots", "8", "300,000 STX"),
+            ("1", "Launch & discovery — establish 8-pot / 2-week cadence", "2", "16", "600,000 STX"),
+            ("2", "Expand participation across all entry tiers", "2", "16", "600,000 STX"),
+            ("3", "Deepen community and builder pot engagement", "2", "16", "600,000 STX"),
+            ("4", "Sustain engagement & measure early retention", "2", "16", "600,000 STX"),
+            ("5", "Maintain cadence, flagship visibility & program close", "2", "16", "600,000 STX"),
+            ("", "Program total", "10", "80", "3,000,000 STX"),
         ],
-        col_widths=[0.6, 2.6, 1.8, 0.7, 1.2],
+        col_widths=[0.7, 3.0, 0.8, 0.7, 1.3],
     )
-    note2 = doc.add_paragraph()
-    set_paragraph_spacing(note2, before=0, after=8, line=1.1)
-    add_text(note2, "Month 1 boost: ", size=10, italic=True, color=GRAY)
-    add_text(note2, "10,000 + 15,000 = 25,000 STX", size=10, italic=True, bold=True, color=GRAY)
-    add_text(note2, "  ·  Month 2: ", size=10, italic=True, color=GRAY)
-    add_text(note2, "20,000 + 25,000 = 45,000 STX", size=10, italic=True, bold=True, color=GRAY)
-    add_text(note2, "  ·  Month 3: ", size=10, italic=True, color=GRAY)
-    add_text(note2, "30,000 + 50,000 = 80,000 STX", size=10, italic=True, bold=True, color=GRAY)
-    add_text(note2, ".", size=10, italic=True, color=GRAY)
-
     add_body(
         doc,
-        "Timing may be adjusted slightly based on fill rates, community readiness, and observed demand, while remaining within the 5-month window, 2-week cycle length, and total allocation.",
+        "Timing of individual pot fills within a cycle may vary based on demand, while remaining within the 2-week cycle length, 8-pots-per-cycle design, and total program allocation.",
     )
 
-    # ---- 6. Benefits ----
+    # 6. Benefits
     add_heading_styled(doc, "6. Why This Benefits the Stacks Ecosystem", level=1)
 
     add_heading_styled(doc, "Increasing User Adoption", level=2)
-    add_body(
+    add_rich_body(
         doc,
-        "Sponsored rewards lower the initial barrier for users and encourage more participants to interact with Stacks DeFi.",
+        [
+            ("Sponsored rewards lower the initial barrier for users and encourage more participants to interact with Stacks DeFi—", {"size": 11}),
+            ("16 sponsored pots every month", {"size": 11, "bold": True}),
+            (" create frequent, accessible entry points.", {"size": 11}),
+        ],
     )
 
     add_heading_styled(doc, "Growing STX Activity", level=2)
@@ -516,12 +547,16 @@ def build():
     )
 
     add_heading_styled(doc, "Expanding Bitcoin DeFi Awareness", level=2)
-    add_body(
+    add_rich_body(
         doc,
-        "Each sponsored pot introduces new users to Bitcoin-secured yield opportunities available through Stacks.",
+        [
+            ("Each sponsored pot introduces new users to Bitcoin-secured yield opportunities available through Stacks. Across ", {"size": 11}),
+            ("80 pots", {"size": 11, "bold": True}),
+            (" in five months, that awareness compounds.", {"size": 11}),
+        ],
     )
 
-    # ---- 7. Expected Outcomes ----
+    # 7. Outcomes
     add_heading_styled(doc, "7. Expected Outcomes", level=1)
     add_body(
         doc,
@@ -532,18 +567,18 @@ def build():
         doc,
         ["Outcome", "Description"],
         [
-            ("User growth", "Increase active participants through attractive reward campaigns"),
-            ("More pot deployments", "Encourage community members and projects to create their own reward pools"),
-            ("Higher ecosystem engagement", "Increase STX utilization and wallet interactions"),
+            ("User growth", "Increase active participants through 10 cycles of attractive reward campaigns"),
+            ("More pot deployments", "Deliver 80 sponsored pots while encouraging community members and projects to create their own pools"),
+            ("Higher ecosystem engagement", "Increase STX utilization and wallet interactions via 16 pots/month"),
             (
                 "Long-term adoption",
-                "Convert campaign participants into recurring StacksPot users, measurable across the full 5-month window",
+                "Convert campaign participants into recurring StacksPot users, measurable across the full 5-month / 10-cycle window",
             ),
         ],
         col_widths=[2.2, 4.3],
     )
 
-    # ---- 8. Transparency ----
+    # 8. Reporting
     add_heading_styled(doc, "8. Transparency & Reporting", level=1)
     add_body(
         doc,
@@ -551,12 +586,12 @@ def build():
     )
 
     add_heading_styled(doc, "Monthly Progress Reports", level=2)
-    add_body(doc, "Delivered at the end of each program month, covering:", after=4)
+    add_body(doc, "Delivered at the end of each program month (covering both 2-week cycles), including:", after=4)
     for item in [
         "Number of participants",
         "Total STX deposited",
-        "Number of pots created",
-        "Sponsored reward distribution for that month",
+        "Number of pots created (target: 16 sponsored pots/month)",
+        "Sponsored reward distribution for that month (target: 600,000 STX)",
         "Early retention / repeat participation signals",
     ]:
         add_bullet(doc, item)
@@ -564,7 +599,7 @@ def build():
     add_heading_styled(doc, "Final Program Report (End of Month 5)", level=2)
     add_body(doc, "A comprehensive retrospective including:", after=4)
     for item in [
-        "Full campaign performance analysis",
+        "Full campaign performance analysis across 10 cycles / 80 pots",
         "User retention statistics across the 5-month period",
         "Cumulative STX utilization and wallet activity",
         "Lessons learned and recommendations for any future ecosystem incentive programs",
@@ -576,7 +611,7 @@ def build():
         "Stacks Endowment will have clear visibility into the impact generated by the sponsorship throughout and at the close of the program.",
     )
 
-    # ---- 9. Conclusion ----
+    # 9. Conclusion
     add_heading_styled(doc, "9. Conclusion", level=1)
     add_body(
         doc,
@@ -587,7 +622,13 @@ def build():
         [
             ("Through collaboration with the Stacks Endowment, a ", {"size": 11}),
             ("5-month Sponsored Pot Growth Accelerator", {"size": 11, "bold": True}),
-            (" can become a powerful ecosystem growth mechanism—attracting users, supporting builders, increasing STX activity, and introducing more participants to Bitcoin DeFi.", {"size": 11}),
+            ("—running ", {"size": 11}),
+            ("8 pots every 2-week cycle", {"size": 11, "bold": True}),
+            (" (", {"size": 11}),
+            ("16 pots/month", {"size": 11, "bold": True}),
+            (", ", {"size": 11}),
+            ("80 pots", {"size": 11, "bold": True}),
+            (" program-wide)—can become a powerful ecosystem growth mechanism: attracting users, supporting builders, increasing STX activity, and introducing more participants to Bitcoin DeFi.", {"size": 11}),
         ],
     )
     add_body(
@@ -601,26 +642,17 @@ def build():
 
     add_horizontal_line(doc)
 
-    # Closing meta
-    close = [
-        ("Prepared by", "StacksPot Team"),
-        ("Date", "July 2026"),
-        ("Program length", "5 months"),
-        ("Requested allocation", "~300,000 STX"),
-    ]
-    close_table = doc.add_table(rows=len(close), cols=2)
-    for i, (label, value) in enumerate(close):
-        c0, c1 = close_table.rows[i].cells
-        set_cell_text(c0, label, bold=True, size=11, color=WHITE)
-        shade_cell(c0, HEADER_FILL)
-        set_cell_borders(c0, color="1A365D")
-        set_cell_text(c1, value, size=11, color=DARK)
-        set_cell_borders(c1)
-        shade_cell(c1, ALT_ROW if i % 2 else "FFFFFF")
-        c0.width = Inches(2.2)
-        c1.width = Inches(4.3)
+    add_meta_table(
+        doc,
+        [
+            ("Prepared by", "StacksPot Team"),
+            ("Date", "July 2026"),
+            ("Program length", "5 months"),
+            ("Cycle design", "8 pots / 2 weeks · 16 pots / month"),
+            ("Requested allocation", "~3,000,000 STX (300,000 STX × 10 cycles)"),
+        ],
+    )
 
-    # Footer
     footer = section.footer
     fp = footer.paragraphs[0]
     fp.alignment = WD_ALIGN_PARAGRAPH.CENTER

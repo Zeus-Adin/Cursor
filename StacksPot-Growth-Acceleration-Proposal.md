@@ -211,7 +211,9 @@ Each sponsored pot introduces new users to Bitcoin-secured yield opportunities a
 
 ## 7. Expected Outcomes
 
-With Stacks Endowment support over the 5-month program, StacksPot expects to achieve:
+With Stacks Endowment support over the 5-month program, StacksPot expects to achieve measurable on-chain activity across pot lifecycle operations and participant joins. Each of the following is a distinct Stacks transaction.
+
+### Qualitative Outcomes
 
 | Outcome | Description |
 |---|---|
@@ -220,6 +222,57 @@ With Stacks Endowment support over the 5-month program, StacksPot expects to ach
 | **Higher ecosystem engagement** | Increase STX utilization and wallet interactions via **16 pots/month** |
 | **Capital efficiency** | Demonstrate reusable sponsorship: **~300,000 STX** committed, returned after each cycle, redeployed for the next |
 | **Long-term adoption** | Convert campaign participants into recurring StacksPot users, measurable across the full 5-month / 10-cycle window |
+
+### Transaction Baseline (How Counts Are Derived)
+
+**Pot lifecycle transactions** — each sponsored pot generates **4** transactions:
+
+| Transaction | Per Pot | Notes |
+|---|---:|---|
+| Pot deploy | 1 | Creates the pot contract / instance |
+| Pot activate | 1 | Enables the pot for the cycle |
+| Pot start | 1 | Opens the pot for participation |
+| Pot close | 1 | Closes the pot at cycle end |
+| **Lifecycle subtotal** | **4** | Per pot, every cycle |
+
+**Participant join transactions** — each joined participant is **1** transaction. Minimum joins use the per-tier **Min. Participants** from the cycle allocation table:
+
+| Entry Min. | Qty / Cycle | Min. Participants / Pot | Join Txs / Cycle |
+|---:|---:|---:|---:|
+| 25 STX | 1 | 10 | 10 |
+| 30 STX | 1 | 15 | 15 |
+| 35 STX | 1 | 20 | 20 |
+| 40 STX | 1 | 25 | 25 |
+| 45 STX | 1 | 30 | 30 |
+| 50 STX | 2 | 50 | 100 |
+| 100 STX | 1 | 100 | 100 |
+| **Cycle total** | **8 pots** | — | **300 join txs** |
+
+> Figures below are **minimum expected** transaction counts (at min. participant fill). Actual totals may be higher if pots overfill.
+
+### Expected Transaction Breakdown
+
+| Transaction Type | Per Cycle (8 pots) | Per Month (16 pots) | Full Program (80 pots / 10 cycles) |
+|---|---:|---:|---:|
+| Pot deploy | 8 | 16 | **80** |
+| Pot activate | 8 | 16 | **80** |
+| Pot start | 8 | 16 | **80** |
+| Pot close | 8 | 16 | **80** |
+| **Lifecycle subtotal** | **32** | **64** | **320** |
+| Participant joins (min.) | 300 | 600 | **3,000** |
+| **Total on-chain txs (min.)** | **332** | **664** | **3,320** |
+
+### Program Totals at a Glance
+
+| Metric | Expected Minimum |
+|---|---:|
+| Sponsored pots delivered | **80** |
+| Pot deploy transactions | **80** |
+| Pot activate transactions | **80** |
+| Pot start transactions | **80** |
+| Pot close transactions | **80** |
+| Participant join transactions | **3,000** |
+| **Total Stacks transactions** | **3,320** |
 
 ---
 
@@ -235,6 +288,7 @@ Delivered at the end of each program month (covering both 2-week cycles), includ
 - Total STX deposited  
 - Number of pots created (**target: 16 sponsored pots/month**)  
 - Sponsored capital deployed per cycle (**300,000 STX**) and confirmation of return to sponsor address after each cycle  
+- Transaction counts: pot deploy, activate, start, close, and participant joins  
 - Early retention / repeat participation signals  
 
 ### Final Program Report (End of Month 5)
@@ -242,6 +296,7 @@ Delivered at the end of each program month (covering both 2-week cycles), includ
 A comprehensive retrospective including:
 
 - Full campaign performance analysis across **10 cycles / 80 pots**  
+- Cumulative transaction breakdown (target minimum: **3,320** on-chain txs)  
 - User retention statistics across the 5-month period  
 - Cumulative STX utilization and wallet activity  
 - Capital custody summary (allocation in, cycle redeployments, final return)  

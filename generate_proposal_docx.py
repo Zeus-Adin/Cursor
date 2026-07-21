@@ -364,19 +364,21 @@ def build():
         [
             ("This proposal requests funding for a ", {"size": 11}),
             ("5-month Growth Accelerator Program", {"size": 11, "bold": True}),
-            (", structured to:", {"size": 11}),
+            (". Each pot runs on a ", {"size": 11}),
+            ("2-week cycle", {"size": 11, "bold": True}),
+            (", so the schedule is paced at roughly two sponsored pots per month.", {"size": 11}),
         ],
-        after=4,
     )
+    add_body(doc, "The program is structured to:", after=4)
     add_numbered(doc, " with smaller, accessible pots early in the program", bold_prefix="Ramp adoption")
     add_numbered(doc, " with mid-tier campaigns through the middle months", bold_prefix="Sustain momentum")
     add_numbered(doc, " with larger flagship pots toward the end of the cycle", bold_prefix="Concentrate demand")
     add_numbered(doc, " across a long enough window to distinguish campaign spikes from lasting engagement", bold_prefix="Measure retention")
 
-    add_body(doc, "A 5-month runway is long enough to:", after=4)
+    add_body(doc, "A 5-month runway (~20 weeks / ~10 bi-weekly cycles) is long enough to:", after=4)
     for item in [
-        "Run multiple campaign tiers without overcrowding the market",
-        "Allow communities and builders to plan and deploy their own pots",
+        "Run all eight sponsored pot tiers sequentially without overcrowding overlapping cycles",
+        "Allow communities and builders to plan and deploy their own pots in buffer weeks",
         "Collect meaningful retention and repeat-participation data",
         "Provide the Endowment with clear monthly visibility into impact",
     ]:
@@ -439,28 +441,54 @@ def build():
         color=GRAY,
     )
 
+    add_heading_styled(doc, "Pot Cycle Length", level=2)
+    add_rich_body(
+        doc,
+        [
+            ("Each sponsored pot runs on a ", {"size": 11}),
+            ("2-week cycle", {"size": 11, "bold": True}),
+            (". Over a 5-month program (~20 weeks), that provides capacity for about ", {"size": 11}),
+            ("10 bi-weekly cycles", {"size": 11, "bold": True}),
+            (". The ", {"size": 11}),
+            ("8 sponsored pots", {"size": 11, "bold": True}),
+            (" therefore occupy ", {"size": 11}),
+            ("16 weeks", {"size": 11, "bold": True}),
+            (" of active campaigns, with remaining weeks used for pacing, community-led pots, and program wrap-up.", {"size": 11}),
+        ],
+    )
+
     add_heading_styled(doc, "Indicative 5-Month Rollout", level=2)
     add_body(
         doc,
-        "Campaigns will be sequenced to build familiarity, then scale commitment:",
+        "Campaigns are sequenced one pot per 2-week cycle—about two pots per month—to build familiarity, then scale commitment:",
         after=6,
     )
     make_table(
         doc,
-        ["Month", "Focus", "Campaign Tiers (Entry Min.)", "Indicative Boost"],
+        ["Month", "Focus", "Campaign Tiers (Entry Min.)", "Cycles", "Indicative Boost"],
         [
-            ("1", "Launch & discovery — lower barriers, introduce sponsorship", "25 / 30 / 35 STX", "45,000 STX"),
-            ("2", "Expand mid-tier participation", "40 / 45 STX", "55,000 STX"),
-            ("3", "Deepen community pots", "50 STX (1 of 2)", "50,000 STX"),
-            ("4", "Sustain engagement & retention", "50 STX (2 of 2)", "50,000 STX"),
-            ("5", "Flagship campaign & program close", "100 STX", "100,000 STX"),
-            ("", "Program total", "8 sponsored pots", "300,000 STX"),
+            ("1", "Launch & discovery — lower barriers, introduce sponsorship", "25 STX → 30 STX", "2", "25,000 STX"),
+            ("2", "Expand mid-tier participation", "35 STX → 40 STX", "2", "45,000 STX"),
+            ("3", "Scale community pots", "45 STX → 50 STX (1 of 2)", "2", "80,000 STX"),
+            ("4", "Sustain engagement & retention", "50 STX (2 of 2)", "1", "50,000 STX"),
+            ("5", "Flagship campaign & program close", "100 STX", "1", "100,000 STX"),
+            ("", "Program total", "8 sponsored pots", "8", "300,000 STX"),
         ],
-        col_widths=[0.7, 3.0, 1.8, 1.3],
+        col_widths=[0.6, 2.6, 1.8, 0.7, 1.2],
     )
+    note2 = doc.add_paragraph()
+    set_paragraph_spacing(note2, before=0, after=8, line=1.1)
+    add_text(note2, "Month 1 boost: ", size=10, italic=True, color=GRAY)
+    add_text(note2, "10,000 + 15,000 = 25,000 STX", size=10, italic=True, bold=True, color=GRAY)
+    add_text(note2, "  ·  Month 2: ", size=10, italic=True, color=GRAY)
+    add_text(note2, "20,000 + 25,000 = 45,000 STX", size=10, italic=True, bold=True, color=GRAY)
+    add_text(note2, "  ·  Month 3: ", size=10, italic=True, color=GRAY)
+    add_text(note2, "30,000 + 50,000 = 80,000 STX", size=10, italic=True, bold=True, color=GRAY)
+    add_text(note2, ".", size=10, italic=True, color=GRAY)
+
     add_body(
         doc,
-        "Timing may be adjusted slightly based on fill rates, community readiness, and observed demand, while remaining within the 5-month window and total allocation.",
+        "Timing may be adjusted slightly based on fill rates, community readiness, and observed demand, while remaining within the 5-month window, 2-week cycle length, and total allocation.",
     )
 
     # ---- 6. Benefits ----

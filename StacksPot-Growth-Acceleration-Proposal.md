@@ -73,17 +73,19 @@ Through Stacks Endowment sponsorship, selected pots can receive reward boosts—
 
 ### 5-Month Campaign Window
 
-This proposal requests funding for a **5-month Growth Accelerator Program**, structured to:
+This proposal requests funding for a **5-month Growth Accelerator Program**. Each pot runs on a **2-week cycle**, so the schedule is paced at roughly two sponsored pots per month.
+
+The program is structured to:
 
 1. **Ramp adoption** with smaller, accessible pots early in the program  
 2. **Sustain momentum** with mid-tier campaigns through the middle months  
 3. **Concentrate demand** with larger flagship pots toward the end of the cycle  
 4. **Measure retention** across a long enough window to distinguish campaign spikes from lasting engagement  
 
-A 5-month runway is long enough to:
+A 5-month runway (~20 weeks / ~10 bi-weekly cycles) is long enough to:
 
-- Run multiple campaign tiers without overcrowding the market  
-- Allow communities and builders to plan and deploy their own pots  
+- Run all eight sponsored pot tiers sequentially without overcrowding overlapping cycles  
+- Allow communities and builders to plan and deploy their own pots in buffer weeks  
 - Collect meaningful retention and repeat-participation data  
 - Provide the Endowment with clear monthly visibility into impact  
 
@@ -116,20 +118,26 @@ The **~300,000 STX** sponsorship budget will be distributed across StacksPot cam
 
 > **Note:** Estimated sBTC reward figures are approximate and subject to market conditions and yield performance at campaign time.
 
+### Pot Cycle Length
+
+Each sponsored pot runs on a **2-week cycle**. Over a 5-month program (~20 weeks), that provides capacity for about **10 bi-weekly cycles**. The **8 sponsored pots** therefore occupy **16 weeks** of active campaigns, with remaining weeks used for pacing, community-led pots, and program wrap-up.
+
 ### Indicative 5-Month Rollout
 
-Campaigns will be sequenced to build familiarity, then scale commitment:
+Campaigns are sequenced one pot per 2-week cycle—about two pots per month—to build familiarity, then scale commitment:
 
-| Month | Focus | Campaign Tiers (Entry Min.) | Indicative Boost |
-|:---:|---|---|---:|
-| **1** | Launch & discovery — lower barriers, introduce sponsorship | 25 / 30 / 35 STX | 45,000 STX |
-| **2** | Expand mid-tier participation | 40 / 45 STX | 55,000 STX |
-| **3** | Deepen community pots | 50 STX (1 of 2) | 50,000 STX |
-| **4** | Sustain engagement & retention | 50 STX (2 of 2) | 50,000 STX |
-| **5** | Flagship campaign & program close | 100 STX | 100,000 STX |
-| | **Program total** | **8 sponsored pots** | **300,000 STX** |
+| Month | Focus | Campaign Tiers (Entry Min.) | Cycles | Indicative Boost |
+|:---:|---|---|:---:|---:|
+| **1** | Launch & discovery — lower barriers, introduce sponsorship | 25 STX → 30 STX | 2 | 25,000 STX |
+| **2** | Expand mid-tier participation | 35 STX → 40 STX | 2 | 45,000 STX |
+| **3** | Scale community pots | 45 STX → 50 STX (1 of 2) | 2 | 80,000 STX |
+| **4** | Sustain engagement & retention | 50 STX (2 of 2) | 1 | 50,000 STX |
+| **5** | Flagship campaign & program close | 100 STX | 1 | 100,000 STX |
+| | **Program total** | **8 sponsored pots** | **8** | **300,000 STX** |
 
-Timing may be adjusted slightly based on fill rates, community readiness, and observed demand, while remaining within the 5-month window and total allocation.
+> Month 1 boost: 10,000 + 15,000 = **25,000 STX** · Month 2: 20,000 + 25,000 = **45,000 STX** · Month 3: 30,000 + 50,000 = **80,000 STX**.
+
+Timing may be adjusted slightly based on fill rates, community readiness, and observed demand, while remaining within the 5-month window, 2-week cycle length, and total allocation.
 
 ---
 

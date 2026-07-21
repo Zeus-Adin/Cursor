@@ -10,7 +10,8 @@
 | **Cycle Length** | 2 weeks |
 | **Pots per Cycle** | 8 |
 | **Pots per Month** | 16 (2 cycles) |
-| **Requested Allocation** | ~3,000,000 STX |
+| **Requested Allocation** | ~300,000 STX |
+| **Capital Model** | Reusable — returned to sponsor after each cycle |
 | **Date** | July 2026 |
 
 ---
@@ -33,13 +34,15 @@ To address this, StacksPot proposes a strategic partnership with the Stacks Endo
 
 ### Operating Model at a Glance
 
-| Unit | Duration / Count | Sponsored Boost |
+| Unit | Duration / Count | Capital Required |
 |---|---|---:|
-| **1 cycle** | 2 weeks · **8 pots** | **300,000 STX** |
-| **1 month** | 2 cycles · **16 pots** | **600,000 STX** |
-| **Full program** | 5 months · **10 cycles · 80 pots** | **~3,000,000 STX** |
+| **1 cycle** | 2 weeks · **8 pots** | **300,000 STX** (delegated) |
+| **1 month** | 2 cycles · **16 pots** | **300,000 STX** (same capital, reused) |
+| **Full program** | 5 months · **10 cycles · 80 pots** | **~300,000 STX** (same capital, reused) |
 
-We are seeking consideration for an ecosystem growth allocation of approximately **3,000,000 STX** to fund these sponsored pot campaigns across the 5-month period, with the goal of accelerating adoption and building sustainable user growth.
+**Important:** After every cycle, delegated sponsorship amounts are **returned to the sponsor’s address**. The same **300,000 STX** is then redeployed into the next cycle’s 8 pots. The Endowment does **not** need new capital each cycle—only a single reusable allocation.
+
+We are seeking consideration for an ecosystem growth allocation of approximately **300,000 STX** to fund sponsored pot campaigns across this 5-month period, with the goal of accelerating adoption and building sustainable user growth.
 
 ---
 
@@ -58,7 +61,7 @@ Users naturally weigh:
 
 Although StacksPot provides a transparent and innovative yield model, early-stage adoption requires stronger incentives so users can experience the platform and understand its long-term value.
 
-To establish network effects, StacksPot needs an initial growth catalyst that increases reward attractiveness while introducing more users to the protocol. A **time-bound, 5-month sponsored program**—running **8 pots every 2-week cycle**—provides that catalyst with clear milestones, measurable outcomes, and a defined end state for evaluation.
+To establish network effects, StacksPot needs an initial growth catalyst that increases reward attractiveness while introducing more users to the protocol. A **time-bound, 5-month sponsored program**—running **8 pots every 2-week cycle**, funded by a **single reusable 300,000 STX allocation**—provides that catalyst with clear milestones, measurable outcomes, and a defined end state for evaluation.
 
 ---
 
@@ -69,6 +72,18 @@ To establish network effects, StacksPot needs an initial growth catalyst that in
 With StacksPot’s updated smart contracts, **pot sponsorship is now enabled**. Ecosystem partners, communities, projects, and organizations can contribute additional STX directly to active pots.
 
 Through Stacks Endowment sponsorship, selected pots can receive reward boosts—making campaigns more attractive and transforming StacksPot from a passive yield product into an active ecosystem engagement tool.
+
+### Capital Efficiency: Reusable Sponsorship
+
+Sponsorship on StacksPot is **delegated, not spent down** as a grant burn each cycle:
+
+1. Endowment allocates **~300,000 STX** to the sponsor address  
+2. That STX is delegated across the **8 pots** in the active 2-week cycle  
+3. When the cycle ends, delegated amounts are **returned to the sponsor’s address**  
+4. The **same STX** is redeployed into the next cycle’s 8 pots  
+5. This repeats across all **10 cycles** in the 5-month program  
+
+This model lets one allocation power **80 sponsored pots** over five months without multiplying the capital ask.
 
 ### Illustrative Example
 
@@ -92,10 +107,11 @@ Through Stacks Endowment sponsorship, selected pots can receive reward boosts—
 | Sponsored pots per month | **16** |
 | Program length | **5 months** (~10 cycles) |
 | Total sponsored pots | **80** |
+| Capital committed | **~300,000 STX** (returned & reused each cycle) |
 
 ### 5-Month Campaign Window
 
-This proposal requests funding for a **5-month Growth Accelerator Program**. Every **2-week cycle** deploys the full **8-pot** sponsorship mix. Because a month contains two cycles, StacksPot will run **16 sponsored pots per month**.
+This proposal requests funding for a **5-month Growth Accelerator Program**. Every **2-week cycle** deploys the full **8-pot** sponsorship mix using the same **300,000 STX**. Because a month contains two cycles, StacksPot will run **16 sponsored pots per month**, with capital returning to the sponsor between cycles.
 
 The program is structured to:
 
@@ -106,12 +122,12 @@ The program is structured to:
 
 A 5-month runway (~20 weeks / **10 bi-weekly cycles**) is long enough to:
 
-- Run **80 sponsored pots** without thinning the per-cycle incentive design  
+- Run **80 sponsored pots** from a single reusable **300,000 STX** allocation  
 - Give communities and builders a predictable bi-weekly cadence to plan around  
 - Collect meaningful retention and repeat-participation data across 10 cycles  
-- Provide the Endowment with clear monthly visibility into impact (16 pots / 600,000 STX per month)  
+- Provide the Endowment with clear monthly visibility into impact (16 pots/month; capital returned each cycle)  
 
-At the end of Month 5, StacksPot will deliver a full program retrospective covering participation, STX utilization, pot creation, sponsored reward distribution, and retention—supporting a data-driven decision on any future continuation.
+At the end of Month 5, StacksPot will deliver a full program retrospective covering participation, STX utilization, pot creation, sponsored reward distribution, and retention—supporting a data-driven decision on any future continuation. Upon program close, the reusable allocation remains available to return fully to the Endowment / sponsor address per the agreed custody arrangement.
 
 ---
 
@@ -125,7 +141,7 @@ A funded, 5-month initiative to increase participation, reward users, and encour
 
 ### Per-Cycle Allocation (8 Pots · 300,000 STX)
 
-Each **2-week cycle** deploys the following **8 sponsored pots**. The sponsorship budget for one cycle is **300,000 STX**, distributed across entry sizes to maximize participation, accelerate pot growth, and generate sustainable sBTC rewards.
+Each **2-week cycle** deploys the following **8 sponsored pots**, funded by **300,000 STX** of reusable sponsorship capital. After the cycle, that capital is returned to the sponsor and reused for the next cycle.
 
 | Qty (×) | Entry Min. | Min. Participants | Pot Target | Awarded Boost | Est. Rewards |
 |:---:|---:|---:|---:|---:|---:|
@@ -138,30 +154,30 @@ Each **2-week cycle** deploys the following **8 sponsored pots**. The sponsorshi
 | 1 | 100 STX | 100 | 10,000 STX | 100,000 STX | ~$52.80 sBTC |
 | **8** | — | — | — | **300,000 STX / cycle** | — |
 
-> **Note:** Estimated sBTC reward figures are approximate and subject to market conditions and yield performance at campaign time. Awarded boost amounts above are **per cycle**; the same mix repeats each cycle.
+> **Note:** Estimated sBTC reward figures are approximate and subject to market conditions and yield performance at campaign time. Boost amounts above describe the **per-cycle deployment mix**. The Endowment’s capital commitment remains **~300,000 STX** for the full program because funds are returned and reused.
 
 ### Program Scale
 
-| Scope | Cycles | Pots | Sponsored Boost |
+| Scope | Cycles | Pots | Capital Required |
 |---|---:|---:|---:|
-| Per cycle | 1 | 8 | 300,000 STX |
-| Per month | 2 | 16 | 600,000 STX |
-| **5-month program** | **10** | **80** | **3,000,000 STX** |
+| Per cycle | 1 | 8 | 300,000 STX (delegated) |
+| Per month | 2 | 16 | 300,000 STX (same capital, reused) |
+| **5-month program** | **10** | **80** | **~300,000 STX** (same capital, reused) |
 
 ### Indicative 5-Month Rollout
 
-Every month runs **two full cycles** of the 8-pot mix (16 pots). Boost volume stays consistent so the market can form habits around the bi-weekly cadence:
+Every month runs **two full cycles** of the 8-pot mix (**16 pots**). The **same 300,000 STX** is redeployed each cycle after returning to the sponsor address:
 
-| Month | Focus | Cycles | Pots | Indicative Boost |
+| Month | Focus | Cycles | Pots | Capital in Use |
 |:---:|---|:---:|---:|---:|
-| **1** | Launch & discovery — establish 8-pot / 2-week cadence | 2 | 16 | 600,000 STX |
-| **2** | Expand participation across all entry tiers | 2 | 16 | 600,000 STX |
-| **3** | Deepen community and builder pot engagement | 2 | 16 | 600,000 STX |
-| **4** | Sustain engagement & measure early retention | 2 | 16 | 600,000 STX |
-| **5** | Maintain cadence, flagship visibility & program close | 2 | 16 | 600,000 STX |
-| | **Program total** | **10** | **80** | **3,000,000 STX** |
+| **1** | Launch & discovery — establish 8-pot / 2-week cadence | 2 | 16 | 300,000 STX (reused) |
+| **2** | Expand participation across all entry tiers | 2 | 16 | 300,000 STX (reused) |
+| **3** | Deepen community and builder pot engagement | 2 | 16 | 300,000 STX (reused) |
+| **4** | Sustain engagement & measure early retention | 2 | 16 | 300,000 STX (reused) |
+| **5** | Maintain cadence, flagship visibility & program close | 2 | 16 | 300,000 STX (reused) |
+| | **Program total** | **10** | **80** | **~300,000 STX committed** |
 
-Timing of individual pot fills within a cycle may vary based on demand, while remaining within the 2-week cycle length, 8-pots-per-cycle design, and total program allocation.
+Timing of individual pot fills within a cycle may vary based on demand, while remaining within the 2-week cycle length, 8-pots-per-cycle design, and the reusable **300,000 STX** allocation.
 
 ---
 
@@ -170,6 +186,10 @@ Timing of individual pot fills within a cycle may vary based on demand, while re
 ### Increasing User Adoption
 
 Sponsored rewards lower the initial barrier for users and encourage more participants to interact with Stacks DeFi—**16 sponsored pots every month** create frequent, accessible entry points.
+
+### Capital-Efficient Growth
+
+Because delegated sponsorship returns to the sponsor after each cycle, the Endowment can power **80 pots over 5 months** with a single **~300,000 STX** commitment rather than multiplying capital per cycle.
 
 ### Growing STX Activity
 
@@ -196,8 +216,9 @@ With Stacks Endowment support over the 5-month program, StacksPot expects to ach
 | Outcome | Description |
 |---|---|
 | **User growth** | Increase active participants through 10 cycles of attractive reward campaigns |
-| **More pot deployments** | Deliver **80 sponsored pots** while encouraging community members and projects to create their own pools |
+| **More pot deployments** | Deliver **80 sponsored pots** from one reusable allocation while encouraging community-created pools |
 | **Higher ecosystem engagement** | Increase STX utilization and wallet interactions via **16 pots/month** |
+| **Capital efficiency** | Demonstrate reusable sponsorship: **~300,000 STX** committed, returned after each cycle, redeployed for the next |
 | **Long-term adoption** | Convert campaign participants into recurring StacksPot users, measurable across the full 5-month / 10-cycle window |
 
 ---
@@ -213,7 +234,7 @@ Delivered at the end of each program month (covering both 2-week cycles), includ
 - Number of participants  
 - Total STX deposited  
 - Number of pots created (**target: 16 sponsored pots/month**)  
-- Sponsored reward distribution for that month (**target: 600,000 STX**)  
+- Sponsored capital deployed per cycle (**300,000 STX**) and confirmation of return to sponsor address after each cycle  
 - Early retention / repeat participation signals  
 
 ### Final Program Report (End of Month 5)
@@ -223,6 +244,7 @@ A comprehensive retrospective including:
 - Full campaign performance analysis across **10 cycles / 80 pots**  
 - User retention statistics across the 5-month period  
 - Cumulative STX utilization and wallet activity  
+- Capital custody summary (allocation in, cycle redeployments, final return)  
 - Lessons learned and recommendations for any future ecosystem incentive programs  
 
 Stacks Endowment will have clear visibility into the impact generated by the sponsorship throughout and at the close of the program.
@@ -233,9 +255,9 @@ Stacks Endowment will have clear visibility into the impact generated by the spo
 
 StacksPot has established the foundation for community-driven yield campaigns on Stacks. The next phase is accelerating adoption by creating stronger participation incentives.
 
-Through collaboration with the Stacks Endowment, a **5-month Sponsored Pot Growth Accelerator**—running **8 pots every 2-week cycle** (**16 pots/month**, **80 pots** program-wide)—can become a powerful ecosystem growth mechanism: attracting users, supporting builders, increasing STX activity, and introducing more participants to Bitcoin DeFi.
+Through collaboration with the Stacks Endowment, a **5-month Sponsored Pot Growth Accelerator**—running **8 pots every 2-week cycle** (**16 pots/month**, **80 pots** program-wide)—can become a powerful ecosystem growth mechanism. Because delegated amounts return to the sponsor after each cycle, a single **~300,000 STX** allocation is sufficient to fund the full program.
 
-This partnership is an opportunity to create a scalable incentive layer that benefits not only StacksPot, but the wider Stacks ecosystem.
+This partnership is an opportunity to create a scalable, capital-efficient incentive layer that benefits not only StacksPot, but the wider Stacks ecosystem.
 
 Together, we can transform every sponsored pot into a gateway for new users to experience Bitcoin-powered DeFi on Stacks.
 
@@ -246,5 +268,5 @@ Together, we can transform every sponsored pot into a gateway for new users to e
 | **Prepared by** | StacksPot Team |
 | **Date** | July 2026 |
 | **Program length** | 5 months |
-| **Cycle design** | 8 pots / 2 weeks · 16 pots / month |
-| **Requested allocation** | ~3,000,000 STX (300,000 STX × 10 cycles) |
+| **Cycle design** | 8 pots / 2 weeks · 16 pots / month · 80 pots total |
+| **Requested allocation** | ~300,000 STX (reusable — returned to sponsor after each cycle) |

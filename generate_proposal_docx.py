@@ -128,12 +128,12 @@ def is_total_row(row):
         key in joined
         for key in (
             "program total",
-            "3,000,000",
-            "300,000 stx / cycle",
             "5-month program",
             "full program",
+            "300,000 stx / cycle",
+            "~300,000 stx committed",
         )
-    ) or (len(row) and str(row[0]).strip() in ("8", "10") and "300,000" in " ".join(str(x) for x in row))
+    )
 
 
 def make_table(doc, headers, rows, col_widths=None):
@@ -150,7 +150,12 @@ def make_table(doc, headers, rows, col_widths=None):
     for r_idx, row in enumerate(rows):
         total = is_total_row(row) or (
             r_idx == len(rows) - 1
-            and any("total" in str(x).lower() or "3,000,000" in str(x) or "300,000 STX / cycle" in str(x) for x in row)
+            and any(
+                "total" in str(x).lower()
+                or "300,000 STX / cycle" in str(x)
+                or "~300,000 STX committed" in str(x)
+                for x in row
+            )
         )
         for c_idx, val in enumerate(row):
             cell = table.rows[r_idx + 1].cells[c_idx]
@@ -204,8 +209,8 @@ def add_meta_table(doc, rows):
         set_cell_text(c1, value, size=11, color=DARK)
         set_cell_borders(c1)
         shade_cell(c1, ALT_ROW if i % 2 else "FFFFFF")
-        c0.width = Inches(2.4)
-        c1.width = Inches(4.1)
+        c0.width = Inches(2.5)
+        c1.width = Inches(4.0)
     return table
 
 
@@ -223,7 +228,6 @@ def build():
     style.font.size = Pt(11)
     style.font.color.rgb = DARK
 
-    # Title
     title = doc.add_paragraph()
     title.alignment = WD_ALIGN_PARAGRAPH.CENTER
     set_paragraph_spacing(title, before=24, after=4, line=1.1)
@@ -252,7 +256,8 @@ def build():
             ("Cycle Length", "2 weeks"),
             ("Pots per Cycle", "8"),
             ("Pots per Month", "16 (2 cycles)"),
-            ("Requested Allocation", "~3,000,000 STX"),
+            ("Requested Allocation", "~300,000 STX"),
+            ("Capital Model", "Reusable — returned to sponsor after each cycle"),
             ("Date", "July 2026"),
         ],
     )
@@ -260,7 +265,6 @@ def build():
     spacer = doc.add_paragraph()
     set_paragraph_spacing(spacer, before=6, after=6)
 
-    # Objective
     add_heading_styled(doc, "Proposal Objective", level=1)
     add_rich_body(
         doc,
@@ -271,7 +275,6 @@ def build():
         ],
     )
 
-    # 1. Executive Summary
     add_heading_styled(doc, "1. Executive Summary", level=1)
     add_body(
         doc,
@@ -299,25 +302,38 @@ def build():
     add_heading_styled(doc, "Operating Model at a Glance", level=2)
     make_table(
         doc,
-        ["Unit", "Duration / Count", "Sponsored Boost"],
+        ["Unit", "Duration / Count", "Capital Required"],
         [
-            ("1 cycle", "2 weeks · 8 pots", "300,000 STX"),
-            ("1 month", "2 cycles · 16 pots", "600,000 STX"),
-            ("Full program", "5 months · 10 cycles · 80 pots", "~3,000,000 STX"),
+            ("1 cycle", "2 weeks · 8 pots", "300,000 STX (delegated)"),
+            ("1 month", "2 cycles · 16 pots", "300,000 STX (same capital, reused)"),
+            ("Full program", "5 months · 10 cycles · 80 pots", "~300,000 STX (same capital, reused)"),
         ],
-        col_widths=[1.5, 3.2, 1.8],
+        col_widths=[1.4, 2.8, 2.4],
+    )
+
+    add_rich_body(
+        doc,
+        [
+            ("Important: ", {"size": 11, "bold": True}),
+            ("After every cycle, delegated sponsorship amounts are ", {"size": 11}),
+            ("returned to the sponsor’s address", {"size": 11, "bold": True}),
+            (". The same ", {"size": 11}),
+            ("300,000 STX", {"size": 11, "bold": True}),
+            (" is then redeployed into the next cycle’s 8 pots. The Endowment does ", {"size": 11}),
+            ("not", {"size": 11, "bold": True}),
+            (" need new capital each cycle—only a single reusable allocation.", {"size": 11}),
+        ],
     )
 
     add_rich_body(
         doc,
         [
             ("We are seeking consideration for an ecosystem growth allocation of approximately ", {"size": 11}),
-            ("3,000,000 STX", {"size": 11, "bold": True}),
-            (" to fund these sponsored pot campaigns across the 5-month period, with the goal of accelerating adoption and building sustainable user growth.", {"size": 11}),
+            ("300,000 STX", {"size": 11, "bold": True}),
+            (" to fund sponsored pot campaigns across this 5-month period, with the goal of accelerating adoption and building sustainable user growth.", {"size": 11}),
         ],
     )
 
-    # 2. Challenge
     add_heading_styled(doc, "2. Current Challenge", level=1)
     add_heading_styled(doc, "The User Adoption Barrier", level=2)
     add_rich_body(
@@ -348,11 +364,12 @@ def build():
             ("time-bound, 5-month sponsored program", {"size": 11, "bold": True}),
             ("—running ", {"size": 11}),
             ("8 pots every 2-week cycle", {"size": 11, "bold": True}),
+            (", funded by a ", {"size": 11}),
+            ("single reusable 300,000 STX allocation", {"size": 11, "bold": True}),
             ("—provides that catalyst with clear milestones, measurable outcomes, and a defined end state for evaluation.", {"size": 11}),
         ],
     )
 
-    # 3. Solution
     add_heading_styled(doc, "3. Proposed Solution", level=1)
     add_heading_styled(doc, "StacksPot Growth Accelerator Program", level=2)
     add_rich_body(
@@ -368,6 +385,18 @@ def build():
         "Through Stacks Endowment sponsorship, selected pots can receive reward boosts—making campaigns more attractive and transforming StacksPot from a passive yield product into an active ecosystem engagement tool.",
     )
 
+    add_heading_styled(doc, "Capital Efficiency: Reusable Sponsorship", level=2)
+    add_body(doc, "Sponsorship on StacksPot is delegated, not spent down as a grant burn each cycle:", after=4)
+    add_numbered(doc, " Endowment allocates ~300,000 STX to the sponsor address")
+    add_numbered(doc, " That STX is delegated across the 8 pots in the active 2-week cycle")
+    add_numbered(doc, " When the cycle ends, delegated amounts are returned to the sponsor’s address")
+    add_numbered(doc, " The same STX is redeployed into the next cycle’s 8 pots")
+    add_numbered(doc, " This repeats across all 10 cycles in the 5-month program")
+    add_body(
+        doc,
+        "This model lets one allocation power 80 sponsored pots over five months without multiplying the capital ask.",
+    )
+
     add_heading_styled(doc, "Illustrative Example", level=2)
     make_table(
         doc,
@@ -380,7 +409,6 @@ def build():
         col_widths=[4.5, 2.0],
     )
 
-    # 4. Duration
     add_heading_styled(doc, "4. Program Duration & Operating Context", level=1)
     add_heading_styled(doc, "Cycle Cadence", level=2)
     make_table(
@@ -393,6 +421,7 @@ def build():
             ("Sponsored pots per month", "16"),
             ("Program length", "5 months (~10 cycles)"),
             ("Total sponsored pots", "80"),
+            ("Capital committed", "~300,000 STX (returned & reused each cycle)"),
         ],
         col_widths=[3.0, 3.5],
     )
@@ -407,9 +436,11 @@ def build():
             ("2-week cycle", {"size": 11, "bold": True}),
             (" deploys the full ", {"size": 11}),
             ("8-pot", {"size": 11, "bold": True}),
-            (" sponsorship mix. Because a month contains two cycles, StacksPot will run ", {"size": 11}),
+            (" sponsorship mix using the same ", {"size": 11}),
+            ("300,000 STX", {"size": 11, "bold": True}),
+            (". Because a month contains two cycles, StacksPot will run ", {"size": 11}),
             ("16 sponsored pots per month", {"size": 11, "bold": True}),
-            (".", {"size": 11}),
+            (", with capital returning to the sponsor between cycles.", {"size": 11}),
         ],
     )
     add_body(doc, "The program is structured to:", after=4)
@@ -420,19 +451,18 @@ def build():
 
     add_body(doc, "A 5-month runway (~20 weeks / 10 bi-weekly cycles) is long enough to:", after=4)
     for item in [
-        "Run 80 sponsored pots without thinning the per-cycle incentive design",
+        "Run 80 sponsored pots from a single reusable 300,000 STX allocation",
         "Give communities and builders a predictable bi-weekly cadence to plan around",
         "Collect meaningful retention and repeat-participation data across 10 cycles",
-        "Provide the Endowment with clear monthly visibility into impact (16 pots / 600,000 STX per month)",
+        "Provide the Endowment with clear monthly visibility into impact (16 pots/month; capital returned each cycle)",
     ]:
         add_bullet(doc, item)
 
     add_body(
         doc,
-        "At the end of Month 5, StacksPot will deliver a full program retrospective covering participation, STX utilization, pot creation, sponsored reward distribution, and retention—supporting a data-driven decision on any future continuation.",
+        "At the end of Month 5, StacksPot will deliver a full program retrospective covering participation, STX utilization, pot creation, sponsored reward distribution, and retention—supporting a data-driven decision on any future continuation. Upon program close, the reusable allocation remains available to return fully to the Endowment / sponsor address per the agreed custody arrangement.",
     )
 
-    # 5. Campaign Structure
     add_heading_styled(doc, "5. Proposed Campaign Structure", level=1)
     add_heading_styled(doc, "Campaign Name", level=2)
     add_rich_body(doc, [("StacksPot Growth Accelerator", {"size": 11, "bold": True})], after=4)
@@ -449,9 +479,9 @@ def build():
             ("2-week cycle", {"size": 11, "bold": True}),
             (" deploys the following ", {"size": 11}),
             ("8 sponsored pots", {"size": 11, "bold": True}),
-            (". The sponsorship budget for one cycle is ", {"size": 11}),
+            (", funded by ", {"size": 11}),
             ("300,000 STX", {"size": 11, "bold": True}),
-            (", distributed across entry sizes to maximize participation, accelerate pot growth, and generate sustainable sBTC rewards.", {"size": 11}),
+            (" of reusable sponsorship capital. After the cycle, that capital is returned to the sponsor and reused for the next cycle.", {"size": 11}),
         ],
     )
 
@@ -476,7 +506,7 @@ def build():
     add_text(note, "Note: ", size=10, italic=True, bold=True, color=GRAY)
     add_text(
         note,
-        "Estimated sBTC reward figures are approximate and subject to market conditions and yield performance at campaign time. Awarded boost amounts above are per cycle; the same mix repeats each cycle.",
+        "Estimated sBTC reward figures are approximate and subject to market conditions and yield performance at campaign time. Boost amounts above describe the per-cycle deployment mix. The Endowment’s capital commitment remains ~300,000 STX for the full program because funds are returned and reused.",
         size=10,
         italic=True,
         color=GRAY,
@@ -485,40 +515,39 @@ def build():
     add_heading_styled(doc, "Program Scale", level=2)
     make_table(
         doc,
-        ["Scope", "Cycles", "Pots", "Sponsored Boost"],
+        ["Scope", "Cycles", "Pots", "Capital Required"],
         [
-            ("Per cycle", "1", "8", "300,000 STX"),
-            ("Per month", "2", "16", "600,000 STX"),
-            ("5-month program", "10", "80", "3,000,000 STX"),
+            ("Per cycle", "1", "8", "300,000 STX (delegated)"),
+            ("Per month", "2", "16", "300,000 STX (same capital, reused)"),
+            ("5-month program", "10", "80", "~300,000 STX (same capital, reused)"),
         ],
-        col_widths=[2.0, 1.2, 1.2, 2.0],
+        col_widths=[1.8, 1.0, 1.0, 2.8],
     )
 
     add_heading_styled(doc, "Indicative 5-Month Rollout", level=2)
     add_body(
         doc,
-        "Every month runs two full cycles of the 8-pot mix (16 pots). Boost volume stays consistent so the market can form habits around the bi-weekly cadence:",
+        "Every month runs two full cycles of the 8-pot mix (16 pots). The same 300,000 STX is redeployed each cycle after returning to the sponsor address:",
         after=6,
     )
     make_table(
         doc,
-        ["Month", "Focus", "Cycles", "Pots", "Indicative Boost"],
+        ["Month", "Focus", "Cycles", "Pots", "Capital in Use"],
         [
-            ("1", "Launch & discovery — establish 8-pot / 2-week cadence", "2", "16", "600,000 STX"),
-            ("2", "Expand participation across all entry tiers", "2", "16", "600,000 STX"),
-            ("3", "Deepen community and builder pot engagement", "2", "16", "600,000 STX"),
-            ("4", "Sustain engagement & measure early retention", "2", "16", "600,000 STX"),
-            ("5", "Maintain cadence, flagship visibility & program close", "2", "16", "600,000 STX"),
-            ("", "Program total", "10", "80", "3,000,000 STX"),
+            ("1", "Launch & discovery — establish 8-pot / 2-week cadence", "2", "16", "300,000 STX (reused)"),
+            ("2", "Expand participation across all entry tiers", "2", "16", "300,000 STX (reused)"),
+            ("3", "Deepen community and builder pot engagement", "2", "16", "300,000 STX (reused)"),
+            ("4", "Sustain engagement & measure early retention", "2", "16", "300,000 STX (reused)"),
+            ("5", "Maintain cadence, flagship visibility & program close", "2", "16", "300,000 STX (reused)"),
+            ("", "Program total", "10", "80", "~300,000 STX committed"),
         ],
-        col_widths=[0.7, 3.0, 0.8, 0.7, 1.3],
+        col_widths=[0.7, 2.8, 0.8, 0.7, 1.6],
     )
     add_body(
         doc,
-        "Timing of individual pot fills within a cycle may vary based on demand, while remaining within the 2-week cycle length, 8-pots-per-cycle design, and total program allocation.",
+        "Timing of individual pot fills within a cycle may vary based on demand, while remaining within the 2-week cycle length, 8-pots-per-cycle design, and the reusable 300,000 STX allocation.",
     )
 
-    # 6. Benefits
     add_heading_styled(doc, "6. Why This Benefits the Stacks Ecosystem", level=1)
 
     add_heading_styled(doc, "Increasing User Adoption", level=2)
@@ -528,6 +557,18 @@ def build():
             ("Sponsored rewards lower the initial barrier for users and encourage more participants to interact with Stacks DeFi—", {"size": 11}),
             ("16 sponsored pots every month", {"size": 11, "bold": True}),
             (" create frequent, accessible entry points.", {"size": 11}),
+        ],
+    )
+
+    add_heading_styled(doc, "Capital-Efficient Growth", level=2)
+    add_rich_body(
+        doc,
+        [
+            ("Because delegated sponsorship returns to the sponsor after each cycle, the Endowment can power ", {"size": 11}),
+            ("80 pots over 5 months", {"size": 11, "bold": True}),
+            (" with a single ", {"size": 11}),
+            ("~300,000 STX", {"size": 11, "bold": True}),
+            (" commitment rather than multiplying capital per cycle.", {"size": 11}),
         ],
     )
 
@@ -556,7 +597,6 @@ def build():
         ],
     )
 
-    # 7. Outcomes
     add_heading_styled(doc, "7. Expected Outcomes", level=1)
     add_body(
         doc,
@@ -568,8 +608,12 @@ def build():
         ["Outcome", "Description"],
         [
             ("User growth", "Increase active participants through 10 cycles of attractive reward campaigns"),
-            ("More pot deployments", "Deliver 80 sponsored pots while encouraging community members and projects to create their own pools"),
+            ("More pot deployments", "Deliver 80 sponsored pots from one reusable allocation while encouraging community-created pools"),
             ("Higher ecosystem engagement", "Increase STX utilization and wallet interactions via 16 pots/month"),
+            (
+                "Capital efficiency",
+                "Demonstrate reusable sponsorship: ~300,000 STX committed, returned after each cycle, redeployed for the next",
+            ),
             (
                 "Long-term adoption",
                 "Convert campaign participants into recurring StacksPot users, measurable across the full 5-month / 10-cycle window",
@@ -578,7 +622,6 @@ def build():
         col_widths=[2.2, 4.3],
     )
 
-    # 8. Reporting
     add_heading_styled(doc, "8. Transparency & Reporting", level=1)
     add_body(
         doc,
@@ -591,7 +634,7 @@ def build():
         "Number of participants",
         "Total STX deposited",
         "Number of pots created (target: 16 sponsored pots/month)",
-        "Sponsored reward distribution for that month (target: 600,000 STX)",
+        "Sponsored capital deployed per cycle (300,000 STX) and confirmation of return to sponsor address after each cycle",
         "Early retention / repeat participation signals",
     ]:
         add_bullet(doc, item)
@@ -602,6 +645,7 @@ def build():
         "Full campaign performance analysis across 10 cycles / 80 pots",
         "User retention statistics across the 5-month period",
         "Cumulative STX utilization and wallet activity",
+        "Capital custody summary (allocation in, cycle redeployments, final return)",
         "Lessons learned and recommendations for any future ecosystem incentive programs",
     ]:
         add_bullet(doc, item)
@@ -611,7 +655,6 @@ def build():
         "Stacks Endowment will have clear visibility into the impact generated by the sponsorship throughout and at the close of the program.",
     )
 
-    # 9. Conclusion
     add_heading_styled(doc, "9. Conclusion", level=1)
     add_body(
         doc,
@@ -628,12 +671,14 @@ def build():
             ("16 pots/month", {"size": 11, "bold": True}),
             (", ", {"size": 11}),
             ("80 pots", {"size": 11, "bold": True}),
-            (" program-wide)—can become a powerful ecosystem growth mechanism: attracting users, supporting builders, increasing STX activity, and introducing more participants to Bitcoin DeFi.", {"size": 11}),
+            (" program-wide)—can become a powerful ecosystem growth mechanism. Because delegated amounts return to the sponsor after each cycle, a single ", {"size": 11}),
+            ("~300,000 STX", {"size": 11, "bold": True}),
+            (" allocation is sufficient to fund the full program.", {"size": 11}),
         ],
     )
     add_body(
         doc,
-        "This partnership is an opportunity to create a scalable incentive layer that benefits not only StacksPot, but the wider Stacks ecosystem.",
+        "This partnership is an opportunity to create a scalable, capital-efficient incentive layer that benefits not only StacksPot, but the wider Stacks ecosystem.",
     )
     add_body(
         doc,
@@ -648,8 +693,8 @@ def build():
             ("Prepared by", "StacksPot Team"),
             ("Date", "July 2026"),
             ("Program length", "5 months"),
-            ("Cycle design", "8 pots / 2 weeks · 16 pots / month"),
-            ("Requested allocation", "~3,000,000 STX (300,000 STX × 10 cycles)"),
+            ("Cycle design", "8 pots / 2 weeks · 16 pots / month · 80 pots total"),
+            ("Requested allocation", "~300,000 STX (reusable — returned to sponsor after each cycle)"),
         ],
     )
 

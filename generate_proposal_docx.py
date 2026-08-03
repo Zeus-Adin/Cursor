@@ -317,10 +317,10 @@ def build():
             "Awarded Boost",
         ],
         [
-            ("10 (JackPot)", "—", "—", "—", "400", "100,000 STX", "—", "10,000 STX / pot"),
-            ("12 (JackPot)", "—", "—", "—", "480", "300,000 STX", "—", "25,000 STX / pot"),
-            ("1 (Sequential)", "—", "—", "—", "40", "100,000 STX", "—", "100,000 STX / pot"),
-            ("23 total", "—", "—", "—", "920", "500,000 STX", "—", "500,000 STX / cycle"),
+            ("10 (JackPot)", "—", "25", "—", "2,900", "100,000 STX", "2,500", "10,000 STX / pot"),
+            ("12 (JackPot)", "—", "50", "—", "6,480", "300,000 STX", "6,000", "25,000 STX / pot"),
+            ("1 (Sequential)", "—", "10", "—", "140", "100,000 STX", "100", "100,000 STX / pot"),
+            ("23 total", "—", "—", "—", "9,520", "500,000 STX", "8,600", "500,000 STX / cycle"),
         ],
         col_widths=[1.15, 0.7, 0.95, 0.7, 0.65, 0.95, 0.95, 1.15],
         font_size=8,
@@ -329,14 +329,14 @@ def build():
     add_heading_styled(doc, "Tier Notes", level=2)
     make_table(
         doc,
-        ["Tier", "Pot Type", "Pots / Cycle", "Boost / Pot", "Tier Capital (reusable)", "Program Pots (×10)"],
+        ["Tier", "Pot Type", "Pots / Cycle", "Min. Part. / Pot", "Boost / Pot", "Tier Capital (reusable)", "Program Pots (×10)"],
         [
-            ("A", "JackPot", "10", "10,000 STX", "100,000 STX", "100"),
-            ("B", "JackPot", "12", "25,000 STX", "300,000 STX", "120"),
-            ("C", "Sequential", "1", "100,000 STX", "100,000 STX", "10"),
-            ("Total", "—", "23", "—", "500,000 STX", "230"),
+            ("A", "JackPot", "10", "25", "10,000 STX", "100,000 STX", "100"),
+            ("B", "JackPot", "12", "50", "25,000 STX", "300,000 STX", "120"),
+            ("C", "Sequential", "1", "10", "100,000 STX", "100,000 STX", "10"),
+            ("Total", "—", "23", "—", "—", "500,000 STX", "230"),
         ],
-        col_widths=[0.7, 1.1, 1.0, 1.1, 1.6, 1.3],
+        col_widths=[0.6, 1.0, 0.9, 1.0, 1.0, 1.5, 1.2],
     )
 
     note = doc.add_paragraph()
@@ -352,36 +352,52 @@ def build():
     add_text(note, "Total Stacked: ", size=9, italic=True, bold=True, color=GRAY)
     add_text(
         note,
-        "sponsor capital delegated to that tier each cycle (returned and reused; not an additive spend across cycles). ",
+        "sponsor capital delegated to that tier each cycle (returned and reused; not multiplied across cycles). ",
         size=9,
         italic=True,
         color=GRAY,
     )
+    add_text(note, "Total Participants: ", size=9, italic=True, bold=True, color=GRAY)
+    add_text(note, "Min. Participants × Qty × 10 cycles. ", size=9, italic=True, color=GRAY)
     add_text(note, "Total Tx: ", size=9, italic=True, bold=True, color=GRAY)
     add_text(
         note,
-        "lifecycle only (deploy + activate + start + close = 4 txs × pots × 10 cycles). Participant-join txs are additional and scale with fill.",
+        "lifecycle (4 × pots × 10 cycles) + participant joins (1 × Total Participants).",
         size=9,
         italic=True,
         color=GRAY,
     )
 
-    add_heading_styled(doc, "Transaction Accounting (Lifecycle)", level=2)
+    add_heading_styled(doc, "How the Totals Are Calculated", level=2)
     make_table(
         doc,
-        ["Transaction", "Per Pot", "Tier A (10×10)", "Tier B (12×10)", "Tier C (1×10)", "Program"],
+        ["Tier", "Lifecycle Txs", "Join Txs", "Total Tx", "Total Participants"],
         [
-            ("Pot deploy", "1", "100", "120", "10", "230"),
-            ("Pot activate", "1", "100", "120", "10", "230"),
-            ("Pot start", "1", "100", "120", "10", "230"),
-            ("Pot close", "1", "100", "120", "10", "230"),
-            ("Lifecycle total", "4", "400", "480", "40", "920"),
+            ("A — 10 JackPot × 25 min", "400", "2,500", "2,900", "2,500"),
+            ("B — 12 JackPot × 50 min", "480", "6,000", "6,480", "6,000"),
+            ("C — 1 Sequential × 10 min", "40", "100", "140", "100"),
+            ("Program", "920", "8,600", "9,520", "8,600"),
         ],
-        col_widths=[1.3, 0.8, 1.2, 1.2, 1.1, 0.9],
+        col_widths=[2.2, 1.1, 1.1, 1.0, 1.4],
+    )
+
+    add_heading_styled(doc, "Transaction Accounting", level=2)
+    make_table(
+        doc,
+        ["Transaction", "Per Pot / Per Join", "Tier A", "Tier B", "Tier C", "Program"],
+        [
+            ("Pot deploy", "1 / pot", "100", "120", "10", "230"),
+            ("Pot activate", "1 / pot", "100", "120", "10", "230"),
+            ("Pot start", "1 / pot", "100", "120", "10", "230"),
+            ("Pot close", "1 / pot", "100", "120", "10", "230"),
+            ("Participant join", "1 / participant", "2,500", "6,000", "100", "8,600"),
+            ("Total txs", "—", "2,900", "6,480", "140", "9,520"),
+        ],
+        col_widths=[1.4, 1.3, 1.0, 1.0, 0.9, 1.0],
     )
     add_body(
         doc,
-        "Entry minimums, minimum participants, pot targets, and resulting Total Participants / join-transaction totals are set at pot deployment within each JackPot or Sequential configuration and will be reported each cycle.",
+        "Entry minimums and pot targets are set at pot deployment within each JackPot or Sequential configuration and will be reflected in reported STX deposited.",
     )
 
     add_heading_styled(doc, "5. Expected Outcomes")
@@ -390,9 +406,9 @@ def build():
         ["Outcome", "Target"],
         [
             ("Sponsored pots delivered", "230 (23 / cycle × 10 cycles)"),
-            ("Lifecycle on-chain transactions", "920 minimum (deploy, activate, start, close)"),
-            ("Participant join transactions", "Reported from live fill (each join = 1 tx)"),
-            ("Monthly throughput", "46 pots / month · 2 cycles"),
+            ("Minimum participants (program)", "8,600 (2,500 + 6,000 + 100)"),
+            ("On-chain transactions (minimum)", "9,520 (920 lifecycle + 8,600 joins)"),
+            ("Monthly throughput", "46 pots / month · 1,720 min. participants · 2 cycles"),
             ("Capital efficiency", "500,000 STX committed once; returned and reused every cycle"),
             ("Ecosystem impact", "Higher STX deposits, wallet activity, and Bitcoin DeFi awareness on Stacks"),
         ],

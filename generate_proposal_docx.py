@@ -403,17 +403,20 @@ def build():
     add_heading_styled(doc, "5. Expected Outcomes")
     make_table(
         doc,
-        ["Outcome", "Target"],
+        ["Outcome", "Program Target", "Average"],
         [
-            ("Sponsored pots delivered", "230 (23 / cycle × 10 cycles)"),
-            ("Minimum participants (program)", "8,600 (2,500 + 6,000 + 100)"),
-            ("Total STX stacked (min. pot target + boost)", "5,397,500 STX (1,062,500 + 3,300,000 + 1,035,000)"),
-            ("On-chain transactions (minimum)", "9,520 (920 lifecycle + 8,600 joins)"),
-            ("Monthly throughput", "46 pots / month · 1,720 min. participants · 2 cycles"),
-            ("Capital efficiency", "500,000 STX committed once; returned and reused every cycle"),
-            ("Ecosystem impact", "Higher STX deposits, wallet activity, and Bitcoin DeFi awareness on Stacks"),
+            ("Sponsored pots delivered", "230 (23 / cycle × 10 cycles)", "23 / cycle · 46 / month"),
+            ("Minimum participants", "8,600 (2,500 + 6,000 + 100)", "860 / cycle · 1,720 / month"),
+            ("Total STX stacked (pot target + boost)", "5,397,500 STX", "539,750 STX / cycle · 1,079,500 STX / month"),
+            ("On-chain transactions (minimum)", "9,520 (920 lifecycle + 8,600 joins)", "952 / cycle · 1,904 / month"),
+            ("Avg. participants per pot", "—", "~37 (8,600 ÷ 230)"),
+            ("Avg. STX stacked per pot", "—", "~23,467 STX (5,397,500 ÷ 230)"),
+            ("Avg. transactions per pot", "—", "~41 (9,520 ÷ 230)"),
+            ("Capital efficiency", "500,000 STX committed once; reused every cycle", "500,000 STX constant (reusable)"),
+            ("Ecosystem impact", "Higher STX deposits, wallet activity, and Bitcoin DeFi awareness on Stacks", "—"),
         ],
-        col_widths=[2.4, 4.1],
+        col_widths=[2.2, 2.2, 2.2],
+        font_size=8,
     )
 
     add_heading_styled(doc, "6. Reporting")

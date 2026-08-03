@@ -317,10 +317,10 @@ def build():
             "Awarded Boost",
         ],
         [
-            ("10 (JackPot)", "25 STX", "25", "625 STX", "2,900", "62,500 STX", "2,500", "10,000 STX / pot"),
-            ("12 (JackPot)", "50 STX", "50", "2,500 STX", "6,480", "300,000 STX", "6,000", "25,000 STX / pot"),
-            ("1 (Sequential)", "350 STX", "10", "3,500 STX", "140", "35,000 STX", "100", "100,000 STX / pot"),
-            ("23 total", "—", "—", "—", "9,520", "397,500 STX", "8,600", "500,000 STX / cycle"),
+            ("10 (JackPot)", "25 STX", "25", "625 STX", "2,900", "1,062,500 STX", "2,500", "10,000 STX / pot"),
+            ("12 (JackPot)", "50 STX", "50", "2,500 STX", "6,480", "3,300,000 STX", "6,000", "25,000 STX / pot"),
+            ("1 (Sequential)", "350 STX", "10", "3,500 STX", "140", "1,035,000 STX", "100", "100,000 STX / pot"),
+            ("23 total", "—", "—", "—", "9,520", "5,397,500 STX", "8,600", "500,000 STX / cycle"),
         ],
         col_widths=[1.15, 0.7, 0.95, 0.75, 0.6, 0.9, 0.9, 1.1],
         font_size=8,
@@ -353,13 +353,19 @@ def build():
     add_text(note, "Pot Target: ", size=9, italic=True, bold=True, color=GRAY)
     add_text(note, "Entry Min. × Min. Participants. ", size=9, italic=True, color=GRAY)
     add_text(note, "Total Stacked: ", size=9, italic=True, bold=True, color=GRAY)
-    add_text(note, "Pot Target × Qty × 10 cycles (participant STX at min fill). ", size=9, italic=True, color=GRAY)
+    add_text(
+        note,
+        "(Pot Target + Awarded Boost) × Qty × 10 cycles. ",
+        size=9,
+        italic=True,
+        color=GRAY,
+    )
     add_text(note, "Total Participants: ", size=9, italic=True, bold=True, color=GRAY)
     add_text(note, "Min. Participants × Qty × 10 cycles. ", size=9, italic=True, color=GRAY)
     add_text(note, "Total Tx: ", size=9, italic=True, bold=True, color=GRAY)
     add_text(
         note,
-        "lifecycle (4 × pots × 10) + joins. Awarded Boost / Tier Capital = reusable sponsor STX (not in Total Stacked).",
+        "lifecycle (4 × pots × 10) + joins. Boost is counted in Total Stacked as deployed volume; capital committed remains 500,000 STX.",
         size=9,
         italic=True,
         color=GRAY,
@@ -368,14 +374,14 @@ def build():
     add_heading_styled(doc, "How the Totals Are Calculated", level=2)
     make_table(
         doc,
-        ["Tier", "Pot Target", "Total Stacked (10 cycles)", "Lifecycle Txs", "Join Txs", "Total Tx", "Total Participants"],
+        ["Tier", "Per-Pot Stacked", "Total Stacked (10 cycles)", "Lifecycle Txs", "Join Txs", "Total Tx", "Total Participants"],
         [
-            ("A — 10 × 25 STX × 25 min", "625", "62,500 STX", "400", "2,500", "2,900", "2,500"),
-            ("B — 12 × 50 STX × 50 min", "2,500", "300,000 STX", "480", "6,000", "6,480", "6,000"),
-            ("C — 1 × 350 STX × 10 min", "3,500", "35,000 STX", "40", "100", "140", "100"),
-            ("Program", "—", "397,500 STX", "920", "8,600", "9,520", "8,600"),
+            ("A — 10 × 25 STX × 25 min", "10,625", "1,062,500 STX", "400", "2,500", "2,900", "2,500"),
+            ("B — 12 × 50 STX × 50 min", "27,500", "3,300,000 STX", "480", "6,000", "6,480", "6,000"),
+            ("C — 1 × 350 STX × 10 min", "103,500", "1,035,000 STX", "40", "100", "140", "100"),
+            ("Program", "—", "5,397,500 STX", "920", "8,600", "9,520", "8,600"),
         ],
-        col_widths=[1.8, 0.8, 1.4, 1.0, 0.85, 0.8, 1.2],
+        col_widths=[1.8, 1.0, 1.4, 1.0, 0.85, 0.8, 1.1],
         font_size=8,
     )
 
@@ -401,7 +407,7 @@ def build():
         [
             ("Sponsored pots delivered", "230 (23 / cycle × 10 cycles)"),
             ("Minimum participants (program)", "8,600 (2,500 + 6,000 + 100)"),
-            ("Participant STX stacked (minimum)", "397,500 STX (62,500 + 300,000 + 35,000)"),
+            ("Total STX stacked (min. pot target + boost)", "5,397,500 STX (1,062,500 + 3,300,000 + 1,035,000)"),
             ("On-chain transactions (minimum)", "9,520 (920 lifecycle + 8,600 joins)"),
             ("Monthly throughput", "46 pots / month · 1,720 min. participants · 2 cycles"),
             ("Capital efficiency", "500,000 STX committed once; returned and reused every cycle"),

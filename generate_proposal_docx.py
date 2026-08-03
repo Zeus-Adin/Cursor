@@ -317,26 +317,27 @@ def build():
             "Awarded Boost",
         ],
         [
-            ("10 (JackPot)", "—", "25", "—", "2,900", "100,000 STX", "2,500", "10,000 STX / pot"),
-            ("12 (JackPot)", "—", "50", "—", "6,480", "300,000 STX", "6,000", "25,000 STX / pot"),
-            ("1 (Sequential)", "—", "10", "—", "140", "100,000 STX", "100", "100,000 STX / pot"),
-            ("23 total", "—", "—", "—", "9,520", "500,000 STX", "8,600", "500,000 STX / cycle"),
+            ("10 (JackPot)", "25 STX", "25", "625 STX", "2,900", "62,500 STX", "2,500", "10,000 STX / pot"),
+            ("12 (JackPot)", "50 STX", "50", "2,500 STX", "6,480", "300,000 STX", "6,000", "25,000 STX / pot"),
+            ("1 (Sequential)", "350 STX", "10", "3,500 STX", "140", "35,000 STX", "100", "100,000 STX / pot"),
+            ("23 total", "—", "—", "—", "9,520", "397,500 STX", "8,600", "500,000 STX / cycle"),
         ],
-        col_widths=[1.15, 0.7, 0.95, 0.7, 0.65, 0.95, 0.95, 1.15],
+        col_widths=[1.15, 0.7, 0.95, 0.75, 0.6, 0.9, 0.9, 1.1],
         font_size=8,
     )
 
     add_heading_styled(doc, "Tier Notes", level=2)
     make_table(
         doc,
-        ["Tier", "Pot Type", "Pots / Cycle", "Min. Part. / Pot", "Boost / Pot", "Tier Capital (reusable)", "Program Pots (×10)"],
+        ["Tier", "Pot Type", "Pots / Cycle", "Entry Min.", "Min. Part. / Pot", "Pot Target", "Boost / Pot", "Tier Capital"],
         [
-            ("A", "JackPot", "10", "25", "10,000 STX", "100,000 STX", "100"),
-            ("B", "JackPot", "12", "50", "25,000 STX", "300,000 STX", "120"),
-            ("C", "Sequential", "1", "10", "100,000 STX", "100,000 STX", "10"),
-            ("Total", "—", "23", "—", "—", "500,000 STX", "230"),
+            ("A", "JackPot", "10", "25 STX", "25", "625 STX", "10,000 STX", "100,000 STX"),
+            ("B", "JackPot", "12", "50 STX", "50", "2,500 STX", "25,000 STX", "300,000 STX"),
+            ("C", "Sequential", "1", "350 STX", "10", "3,500 STX", "100,000 STX", "100,000 STX"),
+            ("Total", "—", "23", "—", "—", "—", "—", "500,000 STX"),
         ],
-        col_widths=[0.6, 1.0, 0.9, 1.0, 1.0, 1.5, 1.2],
+        col_widths=[0.55, 0.9, 0.85, 0.75, 0.95, 0.85, 0.95, 1.0],
+        font_size=8,
     )
 
     note = doc.add_paragraph()
@@ -344,25 +345,21 @@ def build():
     add_text(note, "Tier B: ", size=9, italic=True, bold=True, color=GRAY)
     add_text(
         note,
-        "12 JackPot pots share 300,000 STX of boost capital per cycle → 25,000 STX awarded boost per pot. ",
+        "12 JackPot pots share 300,000 STX boost capital per cycle → 25,000 STX / pot. ",
         size=9,
         italic=True,
         color=GRAY,
     )
+    add_text(note, "Pot Target: ", size=9, italic=True, bold=True, color=GRAY)
+    add_text(note, "Entry Min. × Min. Participants. ", size=9, italic=True, color=GRAY)
     add_text(note, "Total Stacked: ", size=9, italic=True, bold=True, color=GRAY)
-    add_text(
-        note,
-        "sponsor capital delegated to that tier each cycle (returned and reused; not multiplied across cycles). ",
-        size=9,
-        italic=True,
-        color=GRAY,
-    )
+    add_text(note, "Pot Target × Qty × 10 cycles (participant STX at min fill). ", size=9, italic=True, color=GRAY)
     add_text(note, "Total Participants: ", size=9, italic=True, bold=True, color=GRAY)
     add_text(note, "Min. Participants × Qty × 10 cycles. ", size=9, italic=True, color=GRAY)
     add_text(note, "Total Tx: ", size=9, italic=True, bold=True, color=GRAY)
     add_text(
         note,
-        "lifecycle (4 × pots × 10 cycles) + participant joins (1 × Total Participants).",
+        "lifecycle (4 × pots × 10) + joins. Awarded Boost / Tier Capital = reusable sponsor STX (not in Total Stacked).",
         size=9,
         italic=True,
         color=GRAY,
@@ -371,14 +368,15 @@ def build():
     add_heading_styled(doc, "How the Totals Are Calculated", level=2)
     make_table(
         doc,
-        ["Tier", "Lifecycle Txs", "Join Txs", "Total Tx", "Total Participants"],
+        ["Tier", "Pot Target", "Total Stacked (10 cycles)", "Lifecycle Txs", "Join Txs", "Total Tx", "Total Participants"],
         [
-            ("A — 10 JackPot × 25 min", "400", "2,500", "2,900", "2,500"),
-            ("B — 12 JackPot × 50 min", "480", "6,000", "6,480", "6,000"),
-            ("C — 1 Sequential × 10 min", "40", "100", "140", "100"),
-            ("Program", "920", "8,600", "9,520", "8,600"),
+            ("A — 10 × 25 STX × 25 min", "625", "62,500 STX", "400", "2,500", "2,900", "2,500"),
+            ("B — 12 × 50 STX × 50 min", "2,500", "300,000 STX", "480", "6,000", "6,480", "6,000"),
+            ("C — 1 × 350 STX × 10 min", "3,500", "35,000 STX", "40", "100", "140", "100"),
+            ("Program", "—", "397,500 STX", "920", "8,600", "9,520", "8,600"),
         ],
-        col_widths=[2.2, 1.1, 1.1, 1.0, 1.4],
+        col_widths=[1.8, 0.8, 1.4, 1.0, 0.85, 0.8, 1.2],
+        font_size=8,
     )
 
     add_heading_styled(doc, "Transaction Accounting", level=2)
@@ -395,10 +393,6 @@ def build():
         ],
         col_widths=[1.4, 1.3, 1.0, 1.0, 0.9, 1.0],
     )
-    add_body(
-        doc,
-        "Entry minimums and pot targets are set at pot deployment within each JackPot or Sequential configuration and will be reflected in reported STX deposited.",
-    )
 
     add_heading_styled(doc, "5. Expected Outcomes")
     make_table(
@@ -407,6 +401,7 @@ def build():
         [
             ("Sponsored pots delivered", "230 (23 / cycle × 10 cycles)"),
             ("Minimum participants (program)", "8,600 (2,500 + 6,000 + 100)"),
+            ("Participant STX stacked (minimum)", "397,500 STX (62,500 + 300,000 + 35,000)"),
             ("On-chain transactions (minimum)", "9,520 (920 lifecycle + 8,600 joins)"),
             ("Monthly throughput", "46 pots / month · 1,720 min. participants · 2 cycles"),
             ("Capital efficiency", "500,000 STX committed once; returned and reused every cycle"),

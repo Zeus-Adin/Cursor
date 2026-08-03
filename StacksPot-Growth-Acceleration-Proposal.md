@@ -59,33 +59,35 @@ This table is the full breakdown of the sponsored campaign. All figures use the 
 
 | Qty of Pots / Cycle (*) | Entry Min. | Min. Participants | Pot Target | Total Tx | Total Stacked | Total Participants | Awarded Boost |
 |---:|---:|---:|---:|---:|---:|---:|---:|
-| **10** (JackPot) | — | **25** | — | **2,900** | **100,000 STX** | **2,500** | **10,000 STX / pot** |
-| **12** (JackPot) | — | **50** | — | **6,480** | **300,000 STX** | **6,000** | **25,000 STX / pot** |
-| **1** (Sequential) | — | **10** | — | **140** | **100,000 STX** | **100** | **100,000 STX / pot** |
-| **23 total** | — | — | — | **9,520** | **500,000 STX** | **8,600** | **500,000 STX / cycle** |
+| **10** (JackPot) | **25 STX** | **25** | **625 STX** | **2,900** | **62,500 STX** | **2,500** | **10,000 STX / pot** |
+| **12** (JackPot) | **50 STX** | **50** | **2,500 STX** | **6,480** | **300,000 STX** | **6,000** | **25,000 STX / pot** |
+| **1** (Sequential) | **350 STX** | **10** | **3,500 STX** | **140** | **35,000 STX** | **100** | **100,000 STX / pot** |
+| **23 total** | — | — | — | **9,520** | **397,500 STX** | **8,600** | **500,000 STX / cycle** |
 
 ### Tier Notes
 
-| Tier | Pot Type | Pots / Cycle | Min. Participants / Pot | Boost / Pot | Tier Capital (reusable) | Program Pots (×10 cycles) |
-|---|---|---:|---:|---:|---:|---:|
-| A | JackPot | 10 | 25 | 10,000 STX | **100,000 STX** | 100 |
-| B | JackPot | 12 | 50 | 25,000 STX | **300,000 STX** | 120 |
-| C | Sequential | 1 | 10 | 100,000 STX | **100,000 STX** | 10 |
-| **Total** | — | **23** | — | — | **500,000 STX** | **230** |
+| Tier | Pot Type | Pots / Cycle | Entry Min. | Min. Participants / Pot | Pot Target | Boost / Pot | Tier Capital (reusable) |
+|---|---|---:|---:|---:|---:|---:|---:|
+| A | JackPot | 10 | 25 STX | 25 | 625 STX | 10,000 STX | **100,000 STX** |
+| B | JackPot | 12 | 50 STX | 50 | 2,500 STX | 25,000 STX | **300,000 STX** |
+| C | Sequential | 1 | 350 STX | 10 | 3,500 STX | 100,000 STX | **100,000 STX** |
+| **Total** | — | **23** | — | — | — | — | **500,000 STX** |
 
 > **Tier B:** 12 JackPot pots share **300,000 STX** of boost capital per cycle → **25,000 STX** awarded boost per pot.  
-> **Total Stacked** = sponsor capital delegated to that tier each cycle (**returned and reused**; not multiplied across cycles).  
+> **Pot Target** = Entry Min. × Min. Participants (per pot).  
+> **Total Stacked** = Pot Target × Qty × **10 cycles** (participant STX at minimum fill).  
 > **Total Participants** = Min. Participants × Qty × **10 cycles**.  
-> **Total Tx** = lifecycle txs (**deploy + activate + start + close** = 4 × pots × 10 cycles) **+** participant-join txs (1 × Total Participants).
+> **Total Tx** = lifecycle txs (**deploy + activate + start + close** = 4 × pots × 10 cycles) **+** participant-join txs (1 × Total Participants).  
+> **Awarded Boost / Tier Capital** = reusable sponsor STX (returned after each cycle; not included in Total Stacked).
 
 ### How the Totals Are Calculated
 
-| Tier | Lifecycle Txs | Join Txs | Total Tx | Total Participants |
-|---|---:|---:|---:|---:|
-| A — 10 JackPot × 25 min | 10 × 4 × 10 = **400** | 10 × 25 × 10 = **2,500** | **2,900** | **2,500** |
-| B — 12 JackPot × 50 min | 12 × 4 × 10 = **480** | 12 × 50 × 10 = **6,000** | **6,480** | **6,000** |
-| C — 1 Sequential × 10 min | 1 × 4 × 10 = **40** | 1 × 10 × 10 = **100** | **140** | **100** |
-| **Program** | **920** | **8,600** | **9,520** | **8,600** |
+| Tier | Pot Target | Total Stacked (10 cycles) | Lifecycle Txs | Join Txs | Total Tx | Total Participants |
+|---|---:|---:|---:|---:|---:|---:|
+| A — 10 × 25 STX × 25 min | 25 × 25 = **625** | 625 × 10 × 10 = **62,500 STX** | **400** | **2,500** | **2,900** | **2,500** |
+| B — 12 × 50 STX × 50 min | 50 × 50 = **2,500** | 2,500 × 12 × 10 = **300,000 STX** | **480** | **6,000** | **6,480** | **6,000** |
+| C — 1 × 350 STX × 10 min | 350 × 10 = **3,500** | 3,500 × 1 × 10 = **35,000 STX** | **40** | **100** | **140** | **100** |
+| **Program** | — | **397,500 STX** | **920** | **8,600** | **9,520** | **8,600** |
 
 ### Transaction Accounting
 
@@ -98,8 +100,6 @@ This table is the full breakdown of the sponsored campaign. All figures use the 
 | Participant join | 1 / participant | 2,500 | 6,000 | 100 | **8,600** |
 | **Total txs** | — | **2,900** | **6,480** | **140** | **9,520** |
 
-Entry minimums and pot targets are set at pot deployment within each JackPot or Sequential configuration and will be reflected in reported STX deposited.
-
 ---
 
 ## 5. Expected Outcomes
@@ -108,6 +108,7 @@ Entry minimums and pot targets are set at pot deployment within each JackPot or 
 |---|---|
 | Sponsored pots delivered | **230** (23 / cycle × 10 cycles) |
 | Minimum participants (program) | **8,600** (2,500 + 6,000 + 100) |
+| Participant STX stacked (minimum) | **397,500 STX** (62,500 + 300,000 + 35,000) |
 | On-chain transactions (minimum) | **9,520** (920 lifecycle + 8,600 joins) |
 | Monthly throughput | **46 pots / month** · **1,720** min. participants · **2 cycles** |
 | Capital efficiency | **500,000 STX** committed once; returned and reused every cycle |

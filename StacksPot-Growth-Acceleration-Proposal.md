@@ -17,13 +17,25 @@
 
 ---
 
-## 1. Objective
+## 1. Aims
+
+This Growth Accelerator is designed to:
+
+1. **Catalyze adoption** — bring new and returning users into Stacks DeFi through attractive, time-bound sponsored pots  
+2. **Prove capital-efficient incentives** — show that a single reusable **500,000 STX** allocation can power **10 cycles** of high-frequency campaigns  
+3. **Scale on-chain activity** — drive measurable growth in pot deployments, participant joins, STX stacking, and wallet interactions  
+4. **Strengthen community infrastructure** — position StacksPot as a repeatable incentive layer communities and builders can use beyond this program  
+5. **Expand Bitcoin DeFi awareness** — introduce more participants to Bitcoin-secured yield opportunities available through Stacks  
+
+---
+
+## 2. Objective
 
 Accelerate Stacks user adoption through sponsored pot campaigns that boost rewards, deepen STX activity, and introduce more participants to Bitcoin-secured DeFi on Stacks.
 
 ---
 
-## 2. Executive Summary
+## 3. Executive Summary
 
 StacksPot is a decentralized, yield-powered community pot protocol on Stacks. Users join transparent reward pools while preserving principal and earning Bitcoin-secured DeFi yield.
 
@@ -39,7 +51,7 @@ Sponsorship capital is **delegated into pots each 2-week cycle**, then **returne
 
 ---
 
-## 3. How Sponsorship Capital Works
+## 4. How Sponsorship Capital Works
 
 1. Endowment allocates **500,000 STX** to the sponsor address.  
 2. That STX is delegated across the **23 pots** in the active cycle.  
@@ -51,7 +63,7 @@ One allocation powers the full campaign without requiring new capital each cycle
 
 ---
 
-## 4. Boosting Campaign Structure
+## 5. Boosting Campaign Structure
 
 This table is the full breakdown of the sponsored campaign. All figures use the reusable **500,000 STX** allocation across **10 cycles** (5 months).
 
@@ -102,7 +114,7 @@ This table is the full breakdown of the sponsored campaign. All figures use the 
 
 ---
 
-## 5. Expected Outcomes
+## 6. Expected Outcomes
 
 | Outcome | Target |
 |---|---|
@@ -116,7 +128,20 @@ This table is the full breakdown of the sponsored campaign. All figures use the 
 
 ---
 
-## 6. Reporting
+## 7. Benefits
+
+| Benefits of the StacksPot Platform | Benefits of the Stacks Ecosystem |
+|---|---|
+| Stronger reward perception through sponsored boosts, increasing pot fill rates and repeat participation | More STX deposited and actively used across DeFi, increasing network economic activity |
+| Predictable **2-week / 23-pot** campaign cadence that communities can plan around | Higher wallet activity and on-chain transaction volume (target **9,520+** txs over 5 months) |
+| Capital-efficient growth: one **500,000 STX** allocation powers **230 pots** via reusable sponsorship | Expanded surface area for Bitcoin-secured yield — new users experience Stacks as Bitcoin DeFi |
+| Clear pot-type mix (JackPot + Sequential) covering small, mid, and high entry sizes | Builders and communities gain a ready-made incentive rail for their own campaigns after the program |
+| Transparent metrics: pots, participants, stacked STX, and full lifecycle transaction accounting | Retention data across **10 cycles** informs future Endowment and ecosystem incentive design |
+| Converts campaign participants into recurring StacksPot users and pot creators | Strengthens Stacks’ position as the home for accessible, community-driven Bitcoin DeFi |
+
+---
+
+## 8. Reporting
 
 **Monthly:** participants, STX deposited, pots created (target 46/month), capital deployed and returned each cycle, and transaction counts (deploy / activate / start / close / joins).
 
@@ -124,7 +149,7 @@ This table is the full breakdown of the sponsored campaign. All figures use the 
 
 ---
 
-## 7. Conclusion
+## 9. Conclusion
 
 StacksPot requests a **500,000 STX** reusable sponsorship allocation to run **23 boosted pots every 2-week cycle** for **5 months** (**230 pots** program-wide). Because delegated capital returns to the sponsor after each cycle, one allocation funds the entire campaign—attracting users, supporting communities, and expanding Bitcoin-secured DeFi activity on Stacks.
 

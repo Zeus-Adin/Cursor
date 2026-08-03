@@ -234,13 +234,29 @@ def build():
     spacer = doc.add_paragraph()
     set_paragraph_spacing(spacer, before=4, after=4)
 
-    add_heading_styled(doc, "1. Objective")
+    add_heading_styled(doc, "1. Aims")
+    add_body(doc, "This Growth Accelerator is designed to:", after=4)
+    for title, rest in [
+        ("Catalyze adoption", " — bring new and returning users into Stacks DeFi through attractive, time-bound sponsored pots"),
+        ("Prove capital-efficient incentives", " — show that a single reusable 500,000 STX allocation can power 10 cycles of high-frequency campaigns"),
+        ("Scale on-chain activity", " — drive measurable growth in pot deployments, participant joins, STX stacking, and wallet interactions"),
+        ("Strengthen community infrastructure", " — position StacksPot as a repeatable incentive layer communities and builders can use beyond this program"),
+        ("Expand Bitcoin DeFi awareness", " — introduce more participants to Bitcoin-secured yield opportunities available through Stacks"),
+    ]:
+        p = doc.add_paragraph(style="List Number")
+        set_paragraph_spacing(p, before=0, after=3, line=1.1)
+        if p.runs:
+            p.runs[0].text = ""
+        add_text(p, title, size=11, bold=True, color=DARK)
+        add_text(p, rest, size=11, color=DARK)
+
+    add_heading_styled(doc, "2. Objective")
     add_body(
         doc,
         "Accelerate Stacks user adoption through sponsored pot campaigns that boost rewards, deepen STX activity, and introduce more participants to Bitcoin-secured DeFi on Stacks.",
     )
 
-    add_heading_styled(doc, "2. Executive Summary")
+    add_heading_styled(doc, "3. Executive Summary")
     add_body(
         doc,
         "StacksPot is a decentralized, yield-powered community pot protocol on Stacks. Users join transparent reward pools while preserving principal and earning Bitcoin-secured DeFi yield.",
@@ -282,7 +298,7 @@ def build():
         col_widths=[1.8, 1.0, 1.0, 2.8],
     )
 
-    add_heading_styled(doc, "3. How Sponsorship Capital Works")
+    add_heading_styled(doc, "4. How Sponsorship Capital Works")
     add_numbered(doc, "Endowment allocates 500,000 STX to the sponsor address.")
     add_numbered(doc, "That STX is delegated across the 23 pots in the active cycle.")
     add_numbered(doc, "When the cycle ends, delegated amounts are returned to the sponsor address.")
@@ -290,7 +306,7 @@ def build():
     add_numbered(doc, "This repeats for 10 cycles over 5 months.")
     add_body(doc, "One allocation powers the full campaign without requiring new capital each cycle.")
 
-    add_heading_styled(doc, "4. Boosting Campaign Structure")
+    add_heading_styled(doc, "5. Boosting Campaign Structure")
     add_body(
         doc,
         "This table is the full breakdown of the sponsored campaign. All figures use the reusable 500,000 STX allocation across 10 cycles (5 months).",
@@ -400,7 +416,7 @@ def build():
         col_widths=[1.4, 1.3, 1.0, 1.0, 0.9, 1.0],
     )
 
-    add_heading_styled(doc, "5. Expected Outcomes")
+    add_heading_styled(doc, "6. Expected Outcomes")
     make_table(
         doc,
         ["Outcome", "Target"],
@@ -416,7 +432,41 @@ def build():
         col_widths=[2.4, 4.1],
     )
 
-    add_heading_styled(doc, "6. Reporting")
+    add_heading_styled(doc, "7. Benefits")
+    make_table(
+        doc,
+        ["Benefits of the StacksPot Platform", "Benefits of the Stacks Ecosystem"],
+        [
+            (
+                "Stronger reward perception through sponsored boosts, increasing pot fill rates and repeat participation",
+                "More STX deposited and actively used across DeFi, increasing network economic activity",
+            ),
+            (
+                "Predictable 2-week / 23-pot campaign cadence that communities can plan around",
+                "Higher wallet activity and on-chain transaction volume (target 9,520+ txs over 5 months)",
+            ),
+            (
+                "Capital-efficient growth: one 500,000 STX allocation powers 230 pots via reusable sponsorship",
+                "Expanded surface area for Bitcoin-secured yield — new users experience Stacks as Bitcoin DeFi",
+            ),
+            (
+                "Clear pot-type mix (JackPot + Sequential) covering small, mid, and high entry sizes",
+                "Builders and communities gain a ready-made incentive rail for their own campaigns after the program",
+            ),
+            (
+                "Transparent metrics: pots, participants, stacked STX, and full lifecycle transaction accounting",
+                "Retention data across 10 cycles informs future Endowment and ecosystem incentive design",
+            ),
+            (
+                "Converts campaign participants into recurring StacksPot users and pot creators",
+                "Strengthens Stacks’ position as the home for accessible, community-driven Bitcoin DeFi",
+            ),
+        ],
+        col_widths=[3.3, 3.3],
+        font_size=9,
+    )
+
+    add_heading_styled(doc, "8. Reporting")
     add_rich_body(
         doc,
         [
@@ -432,7 +482,7 @@ def build():
         ],
     )
 
-    add_heading_styled(doc, "7. Conclusion")
+    add_heading_styled(doc, "9. Conclusion")
     add_rich_body(
         doc,
         [
